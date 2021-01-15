@@ -1,0 +1,50 @@
+\documentclass{report}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{color}
+\usepackage[sectionbib]{chapterbib}
+\usepackage{longtable}
+\renewcommand{\bibname}{References}
+\renewcommand\citeform{\thechapter-}
+\makeatletter
+\renewcommand{\@biblabel}[1]{[\thechapter-#1]}
+\makeatother
+%%%% Page Style for A4 %%%%
+\paperwidth 210mm
+\paperheight 297mm
+\evensidemargin 0mm
+\oddsidemargin 0mm
+\textwidth 159mm              %210mm-2*25.4mm
+\topmargin 0mm
+\headheight 0mm
+\headsep 0mm
+\topskip 0mm
+\textheight 246mm             %297mm-2*25.4mm
+\footskip 0mm
+%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\title{GKV Manual}
+\author{Shinya Maeyama, \textit{Nagoya University}}
+\maketitle
+
+\tableofcontents
+
+\include{history/history}
+
+\include{formulation/formulation}
+
+\include{normalization/normalization}
+
+\include{discretization/discretization}
+
+\include{simulation/simulation}
+
+\include{diagnostics/diagnostics}
+
+\include{appendix/appendix}
+
+\include{appendix/supplemental}
+
+\end{document}
