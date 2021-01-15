@@ -1,0 +1,241 @@
+\chapter{Simulation}
+\label{chap:Simulation}
+
+\section{Structure of GKV}
+\label{sec:Structure of GKV}
+\textcolor{red}{NOTE: This explanation is based on the GKV version gkvp\_f0.48.}\\
+When one expands the GKV package, there are 
+\begin{itemize}
+  \item \texttt{gkvp\_f0.48/}
+  \begin{itemize}
+    \item \texttt{README\_for\_namelist.txt}
+    \item \texttt{Version\_memo.txt}
+    \item \texttt{src/}
+    \begin{itemize}
+      \item \texttt{gkvp\_f0.48\_header.f90} (Module for setting grid resolutions and MPI processes)
+      \item \texttt{gkvp\_f0.48\_out.f90} (Module for data output)
+      \item ...
+    \end{itemize}
+    \item \texttt{lib/}
+    \begin{itemize}
+      \item ...  (contains libraries for random number and Bessel functions)
+    \end{itemize}
+    \item \texttt{extra\_tools/}
+    \begin{itemize}
+      \item \texttt{fig\_stdout.tar.gz} (creates a PDF file for visualizing standard ASCII output)
+      \item \texttt{v29diag.tar.gz} (Post processing program for analyzing standard BINARY output)
+      \item ...
+    \end{itemize}
+    \item \texttt{run/}
+    \begin{itemize}
+      \item \texttt{gkvp\_f0.48\_namelist} (Namelist for setting physical plasma parameters)
+      \item \texttt{sub.q} (Batch script, depending on machines)
+      \item \texttt{shoot} (Script for submitting jobs, depending on machines)
+      \item \texttt{Makefile} (depending on machines)
+      \item \texttt{backup/}
+      \item ...
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+
+
+
+\section{Setting parameters}
+\label{sec:Setting parameters}
+\begin{table}[tb!]
+  \caption{\texttt{src/gkvp\_f0.48\_header.f90}}
+  \centering
+  \begin{tabular}{| l |}
+  \hline
+  ~~~~$\vdots$ \\
+  !--------------------------------------\\
+  ! Dimension size (grid numbers)\\
+  !--------------------------------------\\
+  ! Global simulation domain\\
+  ! in x, y,z,v,m (0:2*nxw-1, 0:2*nyw-1,-global\_nz:global\_nz-1,1:2*global\_nv,0:global\_nm)\\
+  ! in kx,ky,z,v,m ( -nx:nx,0:global\_ny,-global\_nz:global\_nz-1,1:2*global\_nv,0:global\_nm)\\
+  ~~integer, parameter :: nxw = 128, nyw = 64\\
+  ~~integer, parameter :: nx = 84, global\_ny = 41 ! 2/3 de-aliasing rule\\
+  ~~integer, parameter :: global\_nz = 24, global\_nv = 48, global\_nm = 15\\
+  ~~integer, parameter :: nzb = 3, \& ! the number of ghost grids in z\\
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~nvb = 3 ! the number of ghost grids in v and m\\
+  !--------------------------------------\\
+  ! Data distribution for MPI\\
+  !--------------------------------------\\
+  ~~integer, parameter :: nprocw = 2, nprocz = 2, nprocv = 4, nprocm = 2, nprocs = 2\\
+  ~~~~$\vdots$ \\
+  \hline
+  \end{tabular}
+\end{table}
+Grid resolutions and MPI processes are set in src/gkvp\_f0.48\_header.f90.
+\begin{itemize}
+  \item \texttt{nxw} | Grid number in $x$
+  \item \texttt{nyw} | Grid number in $y$
+  \item \texttt{nx} | Mode number in $k_x$ (-nx:nx)
+  \item \texttt{global\_ny} | Mode number in $k_y$ (0:global\_ny)
+  \item \texttt{global\_nz} | Grid number in $z$ (-global\_nz:global\_nz-1.)
+  \item \texttt{global\_nv} | Grid number in $v_\parallel$ (1:2global\_nv.)
+  \item \texttt{global\_nm} | Grid number in $\mu$ (0:global\_nm.)
+  \item \texttt{nprocw} | MPI processes for $k_y$ decomposition
+  \item \texttt{nprocz} | MPI processes for $z$ decomposition
+  \item \texttt{nprocv} | MPI processes for $v_\parallel$ decomposition
+  \item \texttt{nprocm} | MPI processes for $\mu$ decomposition
+  \item \texttt{nprocs} | MPI processes for $s$ decomposition
+\end{itemize}
+Note that (i) $\mathtt{nxw} > 3\mathtt{nx}/2$ and $\mathtt{nyw} > 3\mathtt{global\_ny}/2$ in nonlinear simulations; (ii) $\mathtt{global\_nz}/\mathtt{nprocz}$, $\mathtt{global\_nv}/\mathtt{nprocv}$, $(\mathtt{global\_nm}+1)/\mathtt{nprocm}$ should be integer; (iii) \texttt{nprocs} is same as the number of kinetic plasma species; (iv) $(\mathtt{global\_nm}+1)/\mathtt{nprocm} \geq 4$. \texttt{nzb} and \texttt{nvb} are the number of ghost grid in $z$ and $v_\parallel / \mu$, whose required numbers depend on the employed finite difference methods. \texttt{nzb}=\texttt{nvb}=3 is enough by default.\\
+
+Plasma parameters are set in \texttt{run/gkvp\_f0.48\_namelist}. See Appendix \ref{sec:List of GKV namelist} in detail.\\
+
+GKV has MHD equilibrium interfaces, IGS for Tokamaks and BZX for Stellarators. See Appendix \ref{sec:Use of MHD equilibrium interfaces} for the use of IGS and BZX.
+
+
+
+
+
+\section{Building}
+\label{sec:Building}
+Prepare a proper \texttt{run/Makefile}. Some samples are found in \texttt{run/backup/}. Then, \\
+~\\
+~~~~\texttt{cd run/}\\
+~~~~\texttt{make}\\
+~\\
+will create the load module \texttt{run/gkvp\_mpifft.exe}.\\
+
+\section{Running}
+\label{sec:Running}
+Prepare proper \texttt{run/sub.q} and \texttt{run/shoot}. Some samples are found in \texttt{run/backup/}. \\
+
+\begin{table}[tb!]
+  \caption{\texttt{run/sub.q} for Plasma Simulator at NIFS.}
+  \centering
+  \begin{tabular}{| l |}
+  \hline
+  \#!/bin/csh\\
+  \#PJM -L "rscunit=fx"\\
+  \#PJM -L "rscgrp=medium"\\
+  \#PJM -L "node=32"\\
+  \#PJM -L "elapse=24:00:00"\\
+  \#PJM -j\\
+  \#PJM -s\\
+  \#PJM --mpi "proc=64"\\
+  \#PJM -g 17000\\
+  setenv PARALLEL 16          \# Thread number for automatic parallelization\\
+  setenv OMP\_NUM\_THREADS 16   \# Thread number for Open MP\\
+  set DIR=\%\%DIR\%\%\\
+  set LDM=gkvp\_mpifft.exe\\
+  set NL=gkvp\_f0.48\_namelist.\%\%\%\\
+  \#\#\# Run\\
+  cd \$\{DIR\}\\
+  setenv fu05 \$\{DIR\}/\$\{NL\}\\
+  module load fftw-fx/3.3.4\\
+  mpiexec \$\{DIR\}/\$\{LDM\}\\
+  \hline
+  \end{tabular}
+\end{table}
+In the batch script \texttt{sub.q}, users specify the numbers of available computation nodes, MPI processes, and OpenMP threads. Required MPI process number of GKV is $\mathtt{nproc} = \mathtt{nprocw}*\mathtt{nprocz}*\mathtt{nprocv}*\mathtt{nprocm}*\mathtt{nprocs}$. Usually, $\mathtt{nproc}*\mathtt{OMP\_NUM\_THREADS} = \mathtt{nodes}*(\mathtt{cores~per~node})$ is a reasonable choice.\\
+
+\begin{table}[tb!]
+  \caption{\texttt{run/shoot}}
+  \label{table:run/shoot}
+  \centering
+  \begin{tabular}{| l |}
+  \hline
+  \#!/bin/csh\\
+  \#\#\#\# Environment setting\\
+  set DIR=/data/lng/maeyama/gkv\_training/test01\\
+  set LDM=gkvp\_mpifft.exe\\
+  set NL=gkvp\_f0.48\_namelist\\
+  set SC=pjsub\\
+  set JS=sub.q\\
+  \#\# For VMEC, set VMCDIR including metric\_boozer.bin.dat\\
+  set VMCDIR=./input\_vmec\\
+  \#\# For IGS, set IGSDIR including METRIC\_{axi,boz,ham}.OUT\\
+  set IGSDIR=./input\_eqdsk\\
+  ~~~~$\vdots$\\
+  \hline
+  \end{tabular}
+\end{table}
+In the Script for submitting jobs, \texttt{shoot}, users set the output directory \texttt{DIR} where all output of GKV will be dumped. After finishing the all settings, type as follow to submit step jobs,\\
+~\\
+~~~~\texttt{cd run/}\\
+~~~~\texttt{./shoot  START\_NUM  END\_NUM  (JOB\_ID)}\\
+~\\
+For example, \texttt{./shoot  1  1} gives a single job (*.001). Similarly, \texttt{./shoot  2  2} gives a single job (*.002), which continues from the first run (*.001). Step job submission allows some sets of successive continuing jobs, e.g., \texttt{./shoot  3  5} gives step jobs (*.003 - *.005). Above three examples assume that the previous job has already finished. If a previous (*.005) job having \texttt{JOB\_ID = 11223} is still in queue, \texttt{./shoot  6  7 11223} adds step jobs (*.006 - *.007) which sequentially follow after the end of previous job (*.005).\\
+
+Before running expensive nonlinear simulations, it is strongly recommended to test computational performance and its scalability: (i) Run a short-time run at the target problem size, (ii) Try some combination of $(\mathtt{nprocw},\mathtt{nprocz},\mathtt{nprocv},\mathtt{nprocm},\mathtt{nprocs},\mathtt{OMP\_NUM\_THREADS})$ while keeping the number of $\mathtt{node}*(\mathtt{cores~per~node})$, (iii) Check scalablity of the computational performance against the number of computation nodes. Optimal setting may strongly depend on the target problem size.  
+
+
+\begin{table}[tb!]
+  \caption{\texttt{run/gkvp\_f0.48\_namelist}}
+  \centering
+  \begin{tabular}{| l |}
+  \hline
+  \&cmemo memo="GKV-plus f0.48 developed for peta-scale computing", \&end\\
+  \&calct calc\_type="nonlinear",\\
+  ~~~~~~~~~z\_bound="outflow",\\
+  ~~~~~~~~~z\_filt="off",\\
+  ~~~~~~~~~z\_calc="cf4",\\
+  ~~~~~~~~~art\_diff=1.d0,\\
+  ~~~~~~~~~num\_triad\_diag=0, \&end\\
+  \&triad mxt = 0, myt = 0/\\
+  \&equib equib\_type = "analytic", \&end\\
+  \&run\_n inum=\%\%\%,\\
+  ~~~~~~~~~ch\_res = .false., \&end\\
+  \&files f\_log="\%\%DIR\%\%/log/gkvp\_f0.48.",\\
+  ~~~~~~~~~f\_hst="\%\%DIR\%\%/hst/gkvp\_f0.48.",\\
+  ~~~~~~~~~f\_phi="\%\%DIR\%\%/phi/gkvp\_f0.48.",\\
+  ~~~~~~~~~f\_fxv="\%\%DIR\%\%/fxv/gkvp\_f0.48.",\\
+  ~~~~~~~~~f\_cnt="\%\%DIR\%\%/cnt/gkvp\_f0.48.", \&end\\
+  \&runlm e\_limit = 84600.d0, \&end\\
+  \&times tend = 200.d0,\\
+  ~~~~~~~~~dtout\_fxv = 1.d0,\\
+  ~~~~~~~~~dtout\_ptn = 0.1d0,\\
+  ~~~~~~~~~dtout\_eng = 0.01d0,\\
+  ~~~~~~~~~dtout\_dtc = 0.001d0, \&end\\
+  \&deltt dt\_max = 0.001d0,\\
+  ~~~~~~~~~adapt\_dt = .true., \\
+  ~~~~~~~~~courant\_num = 0.5d0,\\
+  ~~~~~~~~~time\_advnc = "auto\_init", \&end\\
+  \&physp R0\_Ln = 2.2d0, 2.2d0,\\
+  ~~~~~~~~~R0\_Lt = 6.9d0, 6.9d0,\\
+  ~~~~~~~~~nu = 1.d0, 1.d0,\\
+  ~~~~~~~~~Anum = 5.446d-4, 1.d0,\\
+  ~~~~~~~~~Znum = 1.d0, 1.d0,\\
+  ~~~~~~~~~fcs = 1.d0, 1.d0,\\
+  ~~~~~~~~~sgn = -1.d0, 1.d0,\\
+  ~~~~~~~~~tau = 1.d0, 1.d0,\\
+  ~~~~~~~~~dns1 = 1.d-9, 1.d-9,\\
+  ~~~~~~~~~tau\_ad = 1.d0,\\
+  ~~~~~~~~~lambda\_i = 4.3d-4,\\
+  ~~~~~~~~~beta = 0.4d-2,\\
+  ~~~~~~~~~ibprime = 0,\\
+  ~~~~~~~~~vmax = 4.d0,\\
+  ~~~~~~~~~nx0 = 10000, \&end\\
+  \&nperi n\_tht = 1, \\
+  ~~~~~~~~~kymin = 0.05d0,\\ 
+  ~~~~~~~~~m\_j   = 4, \\
+  ~~~~~~~~~del\_c = 0.d0, \&end\\
+  \&confp eps\_r    = 0.18d0,\\
+  ~~~~~~~~~eps\_rnew = 1.d0,\\
+  ~~~~~~~~~q\_0      = 1.4d0,\\
+  ~~~~~~~~~s\_hat    = 0.78d0,\\
+  ~~~~$\vdots$\\
+  \&nu\_ref Nref = 4.5d19,\\
+  ~~~~~~~~~Lref = 1.7d0,\\
+  ~~~~~~~~~Tref = 2.0d0,\\
+  ~~~~~~~~~col\_type = LB,\\
+  ~~~~~~~~~iFLR = 1, ~icheck = 0, \&end\\
+  \hline
+  \end{tabular}
+\end{table}
+
+
+%\begin{thebibliography}{99}
+%\bibitem{Warbet2010NF}
+%  W
+%\bibitem{Horton1999RMP}
+%  H
+%\bibitem{Garbet2010NF}
+%  G
+%\end{thebibliography}
