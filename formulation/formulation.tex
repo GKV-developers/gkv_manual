@@ -112,7 +112,7 @@ Simulation box $-L_x \leq x < L_x$, $-L_y \leq y < L_y$, $-N_\theta \pi < z < N_
 Since the equilibrium quantities are independent to perpendicular $x$ and $y$ directions, one expand the distribution function and electromagnetic potentials by means of Fourier basis,
 \begin{align}
   \tilde{f}_\mathrm{s}(\bm{x},v_\parallel,\mu,t) &= \sum_{k_x}\sum_{k_y} \tilde{f}_{\mathrm{s}\bm{k}} (z,v_\parallel,\mu,t) e^{i(k_xx+ik_yy)}\\
-  \tilde{\phi}_(\bm{x}',t) &= \sum_{k_x}\sum_{k_y} \tilde{\phi}_{\bm{k}} (z,t) e^{i(k_xx'+ik_yy')}\\
+  \tilde{\phi}(\bm{x}',t) &= \sum_{k_x}\sum_{k_y} \tilde{\phi}_{\bm{k}} (z,t) e^{i(k_xx'+ik_yy')}\\
   J_{0\mathrm{s}} \tilde{\phi}(\bm{x},\mu,t) &= \sum_{k_x}\sum_{k_y} J_0(k_\perp \rho_{\mathrm{ts}}) \tilde{\phi}_{\bm{k}} (z,t) e^{i(k_xx+ik_yy)}\end{align}
 where $\bm{x}$ is the gyrocenter coordinates and $\bm{x}'=\bm{x}+\bm{\rho}_\mathrm{s}$ is the particle-position coordinates.
 
@@ -168,14 +168,14 @@ where $x_\mathrm{a} = v / (\sqrt{2}v_\mathrm{ta})$, $\alpha_\mathrm{ab}=v_\mathr
 Finally, one obtains the $\delta f$ gyrokinetic Vlasov-Poisson-Amp\`{e}re equations in a local flux-tube model, represented in perpendicular wave-number space,
 \begin{align}
   &\frac{\partial \tilde{f}_{\mathrm{s}\bm{k}}}{\partial t} + \left( v_\parallel \nabla_\parallel + i \bm{k} \cdot \bm{v}_\mathrm{sG} + i \bm{k} \cdot \bm{v}_\mathrm{sC} \right) \left( \tilde{f}_{\mathrm{s}\bm{k}} + \frac{e_\mathrm{s} F_\mathrm{sM}}{T_\mathrm{s}} J_{0\mathrm{s}\bm{k}} \tilde{\phi}_{\bm{k}} \right) + N_{\mathrm{s}\bm{k}} \nonumber \\
-  &- \frac{\mu \nabla_\parallel B}{m_\mathrm{s}} \frac{\partial}{\partial v_\parallel} \left( \tilde{f}_\mathrm{s} + \frac{e_\mathrm{s} F_\mathrm{sM}}{T_\mathrm{s}} J_{0\mathrm{s}} \tilde{\phi} \right) + \frac{e_\mathrm{s} F_\mathrm{sM}}{T_\mathrm{s}} \left[ v_\parallel \frac{\partial J_{0\mathrm{s}} \tilde{A}_\parallel}{\partial t} - i \bm{k} \cdot \bm{v}_{\mathrm{s}*} J_{0\mathrm{s}} (\tilde{\phi} - v_\parallel \tilde{A}_\parallel) \right] = C_{\mathrm{s}\bm{k}}, 
+  &- \frac{\mu \nabla_\parallel B}{m_\mathrm{s}} \frac{\partial}{\partial v_\parallel} \left( \tilde{f}_{\mathrm{s}\bm{k}} + \frac{e_\mathrm{s} F_\mathrm{sM}}{T_\mathrm{s}} J_{0\mathrm{s}\bm{k}} \tilde{\phi}_{\bm{k}} \right) + \frac{e_\mathrm{s} F_\mathrm{sM}}{T_\mathrm{s}} \left[ v_\parallel \frac{\partial J_{0\mathrm{s}\bm{k}} \tilde{A}_{\parallel\bm{k}}}{\partial t} - i \bm{k} \cdot \bm{v}_{\mathrm{s}*} J_{0\mathrm{s}\bm{k}} (\tilde{\phi}_{\bm{k}} - v_\parallel \tilde{A}_{\parallel\bm{k}}) \right] = C_{\mathrm{s}\bm{k}}, 
   \label{eq:vlasovink}\\
   &\left[ k_\perp^2 + \frac{1}{\varepsilon_0} \sum_\mathrm{s} \frac{e_\mathrm{s}^2 n_\mathrm{s}}{T_\mathrm{s}} \left( 1 - \Gamma_{0\mathrm{s}\bm{k}} \right) \right] \tilde{\phi}_{\bm{k}} = \frac{1}{\varepsilon_0} \sum_\mathrm{s} e_\mathrm{s} \int dv^3 J_{0\mathrm{s}\bm{k}} \tilde{f}_{\mathrm{s}\bm{k}},
   \label{eq:poissonink} \\
   &k_\perp^2 \tilde{A}_{\parallel\bm{k}} = \mu_0 \sum_\mathrm{s} e_\mathrm{s} \int dv^3 J_{0\mathrm{s}\bm{k}} v_\parallel \tilde{f}_{\mathrm{s}\bm{k}},
   \label{eq:ampereink}
 \end{align}
-where $J_{0\mathrm{s}\bm{k}}=J_0(k_\perp \rho_{\mathrm{s}})$ and $\Gamma_{0\mathrm{s}\bm{k}}=I_0(k_\perp^2 \rho_{\mathrm{ts}}^2)e^{-k_\perp^2 \rho_{\mathrm{ts}}^2}$ with 0th-order Bessel and modified Bessel functions $J_0$ and $J_1$. The included operators are again listed below,
+where $J_{0\mathrm{s}\bm{k}}=J_0(k_\perp \rho_{\mathrm{s}})$ and $\Gamma_{0\mathrm{s}\bm{k}}=I_0(k_\perp^2 \rho_{\mathrm{ts}}^2)e^{-k_\perp^2 \rho_{\mathrm{ts}}^2}$ with 0th-order Bessel and modified Bessel functions $J_0$ and $I_0$. The included operators are again listed below,
 \begin{align}
   \nabla_\parallel &= \frac{c_b}{B \sqrt{g}} \frac{\partial}{\partial z}, \\
   k_\perp^2 &= g^{xx} k_x^2 + 2 g^{xy} k_x k_y + g^{yy} k_y^2, \\
