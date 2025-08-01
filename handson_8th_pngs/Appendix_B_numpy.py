@@ -3,7 +3,7 @@
 
 # # 多次元配列の数値計算パッケージ NumPy
 
-# In[ ]:
+# In[1]:
 
 
 import numpy as np
@@ -15,7 +15,7 @@ import numpy as np
 # - NumPy 配列の持つndim, shape, dtype などの変数により，配列の次元，形状，数値型(int64: 倍精度
 # 整数, float64: 倍精度実数) が確認できる．
 
-# In[ ]:
+# In[2]:
 
 
 a = np.array([1,2,3])
@@ -28,7 +28,7 @@ print(c.shape) # Numpy配列の形状の確認
 print(c.dtype) # Numpy配列の数値型の確認
 
 
-# In[ ]:
+# In[3]:
 
 
 # リストの各要素の要素数が異なるなど、多次元配列の形になっていない場合は意図しない動作になる。
@@ -49,7 +49,7 @@ print(a_mismatch.dtype)
 # ド引数endpoint=False を指定すると，間隔(stop-start)/num で，終端点stop を除く等差数列が
 # 生成される．
 
-# In[ ]:
+# In[4]:
 
 
 i = np.arange(10)                     # 等差整数列の生成
@@ -60,14 +60,14 @@ print(x)
 print(xl)
 
 
-# In[ ]:
+# In[5]:
 
 
 #関数名の候補を表示する。※*?はjupyter特有の記法
 get_ipython().run_line_magic('psearch', 'np.lin*')
 
 
-# In[ ]:
+# In[6]:
 
 
 #Numpyのヘルプを表示する。
@@ -76,7 +76,7 @@ help(np.linspace)
 
 # ## NumPy配列の演算
 
-# In[ ]:
+# In[7]:
 
 
 # 配列とスカラーの演算：要素ごとに行われる
@@ -89,7 +89,7 @@ print(a+b)
 print(a*b)
 
 
-# In[1]:
+# In[8]:
 
 
 #PythonではForループを書かない方が計算が速い。
@@ -114,7 +114,7 @@ print(c1==c2)
 
 # ## NumPy配列形状の変更
 
-# In[ ]:
+# In[9]:
 
 
 a=np.arange(24)    # aは 24 個の連続した値をもつ配列
@@ -130,7 +130,7 @@ print(a.shape)
 # ### 多次元配列のメモリ上の連続性
 # Q. 以下の2次元配列 a を1次元配列へ平坦化(ravel)すると、値の順序はどうなるか？
 
-# In[ ]:
+# In[10]:
 
 
 a = np.array([[1,3],[2,4]])
@@ -144,7 +144,7 @@ print(a.ravel())
 # のインデックスについての和をとる．d = a.sum(axis=(1,2)) の例の様に，和をとる軸を複数まとめ
 # て指定することもできる．
 
-# In[ ]:
+# In[11]:
 
 
 a = np.arange(24)
@@ -164,14 +164,14 @@ print(d.shape)
 # - 多次元配列の場合，キーワード引数axis を指定することで，指定した軸について積分する．多変数関
 # 数y(x, t) の積分などで有用．
 
-# In[ ]:
+# In[12]:
 
 
 x = np.linspace(-5,5,24)
 y = 1/np.sqrt(2*np.pi)*np.exp(-x**2/2)
-area = np.trapz(y,x=x,axis=-1)
+area = np.trapezoid(y,x=x,axis=-1)
 print(area)
-print("Analytic solution: \int_{-∞}^∞ exp(-x^2/2)/√2π = 1")
+print(r"Analytic solution: \int_{-∞}^∞ exp(-x^2/2)/√2π = 1")
 
 
 # In[ ]:
