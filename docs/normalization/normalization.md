@@ -1,0 +1,141 @@
+# Normalization {#chap:normalization}
+
+## Reference units {#sec:reference-units}
+
+We denote the reference values of physical quantities as follows.
+
+-   Reference magnetic field strength $B_\mathrm{ref}$ ($=B_a$ magnetic
+    field strength at the magnetic axis)
+
+-   Reference length $L_\mathrm{ref}$ ($=R_a$ major radius at the
+    magnetic axis)
+
+-   Reference density $n_\mathrm{ref}$ ($=n_e(\rho_0)$ electron density
+    at the center of flux-tube domain)
+
+-   Reference temperature $T_\mathrm{ref}$ ($=T_i(\rho_0)$ main ion
+    temperature at the center of flux-tube domain)
+
+-   Reference mass $m_\mathrm{ref}$ ($=m_\mathrm{p}$ the proton mass)
+
+-   Reference electric charge $e_\mathrm{ref}$ ($=e$ elementary charge)
+
+We also define the following notations
+$v_\mathrm{ref} = \sqrt{T_\mathrm{ref} / m_\mathrm{ref}}$,
+$\rho_\mathrm{ref} = m_\mathrm{ref} v_\mathrm{ref} / (e_\mathrm{ref} B_\mathrm{ref})$,
+$\delta_\mathrm{ref} = \rho_\mathrm{ref} / L_\mathrm{ref}$. For
+single-species simulations with adiabatic electron/ion models, see
+[Appendix X](../appendix/adiabatic-electron-ion-model-for-nprocs-1.md#sec:adiabatic-electron-ion-model-for-nprocs-1){ .sec-ref data-target-id="sec:adiabatic-electron-ion-model-for-nprocs-1" data-prefix="Appendix" }.
+
+## Normalized equations {#sec:normalized-equations}
+
+We represent a dimensionless quantity by an overline, $\bar f$, in this
+section.
+
+The coordinates, variables, operators are normalized as
+
+\begin{align}
+  &t = \frac{L_\mathrm{ref}}{v_\mathrm{ref}} \bar{t},~~
+  x=\rho_\mathrm{ref} \bar{x},~~
+  k_x = \frac{1}{\rho_\mathrm{ref}} \bar{k}_x,~~
+  y=\rho_\mathrm{ref} \bar{y},~~
+  k_y = \frac{1}{\rho_\mathrm{ref}} \bar{k}_y,~~
+  z = \bar{z}, \nonumber \\
+  &v_\parallel= v_\mathrm{ts} \bar{v}_\parallel = v_\mathrm{ref} \sqrt{\frac{\bar{T}_\mathrm{s}}{\bar{m}_\mathrm{s}}} \bar{v}_\parallel,~~
+  \mu = \frac{T_\mathrm{s}}{B_\mathrm{ref}} \bar{\mu} = \frac{T_\mathrm{ref}}{B_\mathrm{ref}} T_\mathrm{s} \bar{\mu}, \nonumber \\
+  &\tilde{f}_{\mathrm{s}\bm{k}} = \delta_\mathrm{ref} \frac{n_\mathrm{s}}{v_\mathrm{ts}^3} \bar{f}_{\mathrm{s}\bm{k}},~~
+  \tilde{\phi}_{\bm{k}} = \delta_\mathrm{ref} \frac{T_\mathrm{ref}}{e_\mathrm{ref}}\bar{\phi}_{\bm{k}},~~
+  \tilde{A}_{\parallel\bm{k}} = \delta_\mathrm{ref} \rho_\mathrm{ref} B_\mathrm{ref}\bar{A}_{\parallel\bm{k}}, \nonumber \\
+  &n_\mathrm{s} = n_\mathrm{ref} \bar{n}_\mathrm{s},~~
+  T_\mathrm{s} = T_\mathrm{ref} \bar{T}_\mathrm{s},~~
+  m_\mathrm{s} = m_\mathrm{ref} \bar{m}_\mathrm{s},~~
+  e_\mathrm{s} = e_\mathrm{ref} \bar{e}_\mathrm{s}, \nonumber \\
+  &\nabla_\parallel = \frac{1}{L_\mathrm{ref}} \bar{\nabla}_\parallel,~~ 
+  \bm{v}_{\mathrm{sG}} = \delta_\mathrm{ref} v_\mathrm{ref} \bar{\bm{v}}_{\mathrm{sG}},~~
+  \bm{v}_{\mathrm{sC}} = \delta_\mathrm{ref} v_\mathrm{ref} \bar{\bm{v}}_{\mathrm{sC}},~~
+  \bm{v}_{\mathrm{s}*} = \delta_\mathrm{ref} v_\mathrm{ref} \bar{\bm{v}}_{\mathrm{s}*}, \nonumber \\
+  &F_\mathrm{sM} = \frac{n_\mathrm{s}}{v_\mathrm{ts}^3} \bar{F}_\mathrm{sM},~~
+  J_{0\mathrm{s}\bm{k}} = \bar{J}_{0\mathrm{s}\bm{k}},~~
+  \Gamma_{0\mathrm{s}\bm{k}} = \bar{\Gamma}_{0\mathrm{s}\bm{k}},~~ \nonumber \\
+  &K_x = \frac{1}{L_\mathrm{ref}} \bar{K}_x,~~
+  K_y = \frac{1}{L_\mathrm{ref}} \bar{K}_y, 
+  L_{n\mathrm{s}} = L_\mathrm{ref} \bar{L}_{n\mathrm{s}},~~
+  L_{T\mathrm{s}} = L_\mathrm{ref} \bar{L}_{T\mathrm{s}},~~ \nonumber \\
+  &\frac{dP}{dx} = \frac{n_\mathrm{ref}T_\mathrm{ref}}{L_\mathrm{ref}} \frac{d\bar{P}}{d\bar{x}},~~
+  c_b = B_\mathrm{ref} \bar{c}_b,~~
+  B = B_\mathrm{ref} \bar{B}, \nonumber \\
+  &\frac{\partial \ln B}{\partial x} = \frac{1}{L_\mathrm{ref}} \frac{\partial \ln \bar{B}}{\partial \bar{x}},~~
+  \frac{\partial \ln B}{\partial y} = \frac{1}{L_\mathrm{ref}} \frac{\partial \ln \bar{B}}{\partial \bar{y}},~~
+  \frac{\partial \ln B}{\partial z} = \frac{\partial \ln \bar{B}}{\partial \bar{z}},~~ \nonumber \\
+  &g^{xx} = \bar{g}^{xx},~~
+  g^{xy} = \bar{g}^{xy},
+  g^{xz} = \frac{1}{L_\mathrm{ref}} \bar{g}^{xz},~~
+  g^{yy} = \bar{g}^{yy},~~ \nonumber \\
+  &g^{yz} = \frac{1}{L_\mathrm{ref}} \bar{g}^{yz},~~
+  g^{zz} = \frac{1}{L_\mathrm{ref}^2} \bar{g}^{zz},~~
+  \sqrt{g} = L_\mathrm{ref} \sqrt{\bar{g}},~~
+  \nu = \frac{v_\mathrm{ref}}{L_\mathrm{ref}} \bar{\nu}, \nonumber \\ 
+  &N_{\mathrm{s}\bm{k}} = \frac{v_\mathrm{ref}}{L_\mathrm{ref}}\delta_\mathrm{ref} \frac{n_\mathrm{s}}{v_\mathrm{ts}^3} \bar{N}_{\mathrm{s}\bm{k}},~~
+  C_{\mathrm{s}\bm{k}} = \frac{v_\mathrm{ref}}{L_\mathrm{ref}}\delta_\mathrm{ref} \frac{n_\mathrm{s}}{v_\mathrm{ts}^3} \bar{C}_{\mathrm{s}\bm{k}}.\end{align}
+
+Then, the normalized equations are 
+
+<a id="eq:vlasoveq_normalized"></a>
+<a id="eq:ampereeq_normalized"></a>
+
+\begin{align}
+  &\frac{\partial \bar{f}_{\mathrm{s}\bm{k}}}{\partial \bar{t}} + \left( \sqrt{\frac{\bar{T}_\mathrm{s}}{\bar{m}_\mathrm{s}}} \bar{v}_\parallel \bar{\nabla}_\parallel + i \bar{\bm{k}} \cdot \bar{\bm{v}}_\mathrm{sG} + i \bar{\bm{k}} \cdot \bar{\bm{v}}_\mathrm{sC} \right) \left( \bar{f}_{\mathrm{s}\bm{k}} + \frac{\bar{e}_\mathrm{s} \bar{F}_\mathrm{sM}}{\bar{T}_\mathrm{s}} \bar{J}_{0\mathrm{s}\bm{k}} \bar{\phi}_{\bm{k}} \right) \nonumber \\
+  &+ \bar{N}_{\mathrm{s}\bm{k}} - \sqrt{\frac{\bar{T}_\mathrm{s}}{\bar{m}_\mathrm{s}}} \bar{\mu} \bar{\nabla}_\parallel \bar{B} \frac{\partial}{\partial \bar{v}_\parallel} \left( \bar{f}_\mathrm{s} + \frac{\bar{e}_\mathrm{s} \bar{F}_\mathrm{sM}}{\bar{T}_\mathrm{s}} \bar{J}_{0\mathrm{s}} \bar{\phi} \right) \nonumber \\
+  &+ \frac{e_\mathrm{s} F_\mathrm{sM}}{T_\mathrm{s}} \left[ \sqrt{\frac{\bar{T}_\mathrm{s}}{\bar{m}_\mathrm{s}}} \bar{v}_\parallel \frac{\partial \bar{J}_{0\mathrm{s}} \bar{A}_\parallel}{\partial \bar{t}} - i \bar{\bm{k}} \cdot \bar{\bm{v}}_{\mathrm{s}*} \bar{J}_{0\mathrm{s}} (\bar{\phi} - \sqrt{\frac{\bar{T}_\mathrm{s}}{\bar{m}_\mathrm{s}}} \bar{v}_\parallel \bar{A}_\parallel) \right] = \bar{C}_{\mathrm{s}\bm{k}}, 
+  \label{eq:vlasoveq_normalized}\\
+  &\left[ \bar{\lambda}_\mathrm{D}^2 \bar{k}_\perp^2 + \sum_\mathrm{s} \frac{\bar{e}_\mathrm{s}^2 \bar{n}_\mathrm{s}}{\bar{T}_\mathrm{s}} \left( 1 - \bar{\Gamma}_{0\mathrm{s}\bm{k}} \right) \right] \bar{\phi}_{\bm{k}} = \sum_\mathrm{s} \bar{e}_\mathrm{s} \bar{n}_\mathrm{s} \int d\bar{v}^3 \bar{J}_{0\mathrm{s}\bm{k}} \bar{f}_{\mathrm{s}\bm{k}}, 
+  \label{eq:poissoneq_normalized}\\
+  &\bar{k}_\perp^2 \bar{A}_{\parallel\bm{k}} = \bar{\beta} \sum_\mathrm{s} \bar{e}_\mathrm{s} \bar{n}_\mathrm{s} \int d\bar{v}^3 \bar{J}_{0\mathrm{s}\bm{k}} \sqrt{\frac{\bar{T}_\mathrm{s}}{\bar{m}_\mathrm{s}}} \bar{v}_\parallel \bar{f}_{\mathrm{s}\bm{k}},
+  \label{eq:ampereeq_normalized}\end{align}
+
+ where we introduced
+$\bar{\lambda}_\mathrm{D}^2 = \frac{\lambda_\mathrm{D,ref}^2}{\rho_\mathrm{ref}^2} = \frac{\varepsilon_0 T_\mathrm{ref}/e_\mathrm{ref}^2n_\mathrm{ref}}{\rho_\mathrm{ref}^2}$
+and
+$\bar{\beta} = \frac{\mu_0 n_\mathrm{ref} T_\mathrm{ref}}{B_\mathrm{ref}^2}$.
+The included terms and operators are 
+
+\begin{align}
+  &\bar{\nabla}_\parallel = \frac{\bar{c}_b}{\bar{B} \sqrt{\bar{g}}} \frac{\partial}{\partial z},~~
+  \bar{k}_\perp^2 = \bar{g}^{xx} \bar{k}_x^2 + 2 \bar{g}^{xy} \bar{k}_x \bar{k}_y + \bar{g}^{yy} \bar{k}_y^2, \nonumber \\
+  &i \bar{\bm{k}} \cdot (\bar{\bm{v}}_\mathrm{sG} + \bar{\bm{v}}_\mathrm{sC}) = \frac{\bar{T}_\mathrm{s} (\bar{v}_\parallel^2 + \bar{\mu} \bar{B})}{\bar{e}_\mathrm{s} \bar{c}_b} \left( i \bar{K}_x \bar{k}_x + i \bar{K}_y \bar{k}_y \right) + i \frac{\bar{T}_\mathrm{s} \bar{v}_\parallel^2}{\bar{e}_\mathrm{s} \bar{c}_b} \bar{\beta} \frac{d\bar{P}/d\bar{x}}{\bar{B}^2} \bar{k}_y, \nonumber \\
+  &i \bar{\bm{k}} \cdot \bar{\bm{v}}_\mathrm{s*} = - i \frac{\bar{T}_\mathrm{s}}{\bar{e}_\mathrm{s} \bar{c}_b} \left[ \frac{1}{\bar{L}_{n\mathrm{s}}} + \left( \frac{\bar{v}_\parallel^2}{2} + \bar{\mu} \bar{B} - \frac{3}{2} \right) \frac{1}{\bar{L}_{T\mathrm{s}}} \right] \bar{k}_y, \nonumber \\
+  &\bar{\mathcal{N}}_{\mathrm{s}\bm{k}} = - \sum_{\bar{\bm{k}}'} \sum_{\bar{\bm{k}}''} \delta_{\bar{\bm{k}}'+\bar{\bm{k}}'',\bar{\bm{k}}}\frac{\bar{\bm{b}} \cdot \bar{\bm{k}}' \times \bar{\bm{k}}''}{\bar{c}_b} \nonumber \\
+  & \hspace{2cm} \times \bar{J}_{0\mathrm{s}\bm{k}'} \left( \bar{\phi}_{\bm{k}'} - \sqrt{\frac{\bar{T}_\mathrm{s}}{\bar{m}_\mathrm{s}}} \bar{v}_\parallel \bar{A}_{\parallel\bm{k}'} \right) \left( \bar{f}_{\mathrm{s}\bm{k}''} + \frac{\bar{e}_\mathrm{s} \bar{F}_\mathrm{Ms}}{\bar{T}_\mathrm{s}} \bar{J}_{0\mathrm{s}\bm{k}''} \bar{\phi}_{\bm{k}''} \right), \nonumber \\
+  &\bar{K}_x = - \frac{\partial \ln \bar{B}}{\partial \bar{y}} + \frac{\bar{g}^{xz} \bar{g}^{yx} - \bar{g}^{xx} \bar{g}^{yz}}{\bar{B}^2/\bar{c}_b^2} \frac{\partial \ln \bar{B}}{\partial \bar{z}},~~ \nonumber \\
+  &\bar{K}_y = \frac{\partial \ln \bar{B}}{\partial \bar{x}} + \frac{\bar{g}^{xz} \bar{g}^{yy} - \bar{g}^{xy} \bar{g}^{yz}}{\bar{B}^2/\bar{c}_b^2} \frac{\partial \ln \bar{B}}{\partial \bar{z}}, \nonumber \\
+  &\frac{d\bar{P}}{d\bar{x}} = - \sum_\mathrm{s} \bar{n}_\mathrm{s} \bar{T}_\mathrm{s} \left( \frac{1}{\bar{L}_{n\mathrm{s}}} + \frac{1}{\bar{L}_{T\mathrm{s}}} \right),~~
+  \bar{F}_\mathrm{sM} = \frac{1}{(2\pi)^\frac{3}{2}} e^{-\frac{\bar{v}_\parallel^2}{2}-\bar{\mu}\bar{B}}, \nonumber \\
+  &\bar{J}_{0\mathrm{s}\bm{k}} = J_0 \left( \bar{k}_\perp \bar{\rho}_\mathrm{s} \right),~~
+  \bar{\Gamma}_{0\mathrm{s}\bm{k}} = I_0 \left( \bar{k}_\perp^2 \bar{\rho}_\mathrm{ts}^2 \right) e^{- \bar{k}_\perp^2 \bar{\rho}_\mathrm{ts}^2},~~ \nonumber \\
+  &\bar{\rho}_\mathrm{s} = \sqrt{\frac{2\bar{m}_\mathrm{s}\bar{T}_\mathrm{s}\bar{\mu}}{\bar{e}_\mathrm{s}^2\bar{B}}},~~
+  \bar{\rho}_\mathrm{ts} = \frac{\sqrt{\bar{m}_\mathrm{s}\bar{T}_\mathrm{s}}}{\bar{e}_\mathrm{s}\bar{B}}\end{align}
+
+and the normalized Lenard-Bernstein, Lorentz, and Sugama collision
+operators are 
+
+\begin{align}
+  \bar{C}_{\mathrm{a}\bm{k}}^\mathrm{LB} = \bar{\nu}_\mathrm{a} \left[ \frac{\partial^2 \bar{g}_{\mathrm{a}\bm{k}}}{\partial \bar{v}_\parallel^2} + \frac{\partial^2 \bar{g}_{\mathrm{a}\bm{k}}}{\partial \bar{v}_\perp^2} + \bar{v}_\parallel \frac{\partial \bar{g}_{\mathrm{a}\bm{k}}}{\partial \bar{v}_\parallel} + \left(\frac{1}{\bar{v}_\perp} + \bar{v}_\perp \right) \frac{\partial \bar{g}_{\mathrm{a}\bm{k}}}{\partial \bar{v}_\perp} + 3 \bar{g}_{\mathrm{a}\bm{k}} - \bar{k}_\perp^2\bar{\rho}_\mathrm{ts}^2 \bar{g}_{\mathrm{a}\bm{k}} \right],\end{align}
+
+
+\begin{align}
+  \bar{C}_{\mathrm{a}\bm{k}}^\mathrm{Lorentz} = \bar{\nu}_\mathrm{D}^\mathrm{ab} &\Bigg[ \frac{\bar{v}_\perp^2}{2} \frac{\partial^2 \bar{g}_{\mathrm{a}\bm{k}}}{\partial \bar{v}_\parallel^2} + \frac{\bar{v}_\parallel^2}{2} \frac{\partial^2 \bar{g}_{\mathrm{a}\bm{k}}}{\partial \bar{v}_\perp^2} \nonumber \\
+  &- \bar{v}_\parallel \bar{v}_\perp  \frac{\partial^2 \bar{g}_{\mathrm{a}\bm{k}}}{\partial \bar{v}_\parallel \partial \bar{v}_\perp} - \bar{v}_\parallel \frac{\partial \bar{g}_{\mathrm{a}\bm{k}}}{\partial \bar{v}_\parallel} + \frac{\bar{v}_\perp}{2} \left(\frac{\bar{v}_\parallel^2}{\bar{v}_\perp^2} - 1 \right) \frac{\partial \bar{g}_{\mathrm{a}\bm{k}}}{\partial \bar{v}_\perp} \nonumber \\
+  &- \frac{\bar{k}_\perp^2\bar{\rho}_\mathrm{ta}^2}{4} (2\bar{v}_\parallel^2+\bar{v}_\perp^2) \bar{g}_{\mathrm{a}\bm{k}} \Bigg],\end{align}
+
+
+\begin{align}
+  \bar{C}_{\mathrm{a}\bm{k}}^\mathrm{Sugama} &= \sum_\mathrm{b} \left[ C^\mathrm{V}_\mathrm{ab}(\bar{g}_{\mathrm{a}\bm{k}}) + C^\mathrm{D}_\mathrm{ab}(\bar{g}_{\mathrm{a}\bm{k}}) + C^\mathrm{F}_\mathrm{ab}(\bar{g}_{\mathrm{b}\bm{k}}) \right], \\
+  C^\mathrm{V}_\mathrm{ab}(\bar{g}_{\mathrm{a}\bm{k}}) &= \frac{\bar{\nu}_\parallel^\mathrm{ab}\bar{v}_\parallel^2+\bar{\nu}_\mathrm{D}^\mathrm{ab}\bar{v}_\perp^2}{2}\frac{\partial^2 \bar{g}_{\mathrm{a}\bm{k}}}{\partial \bar{v}_\parallel^2} \nonumber \\
+  &+ \frac{\bar{\nu}_\mathrm{D}^\mathrm{ab}\bar{v}_\parallel^2+\bar{\nu}_\parallel^\mathrm{ab}\bar{v}_\perp^2}{2}\frac{\partial^2 \bar{g}_{\mathrm{a}\bm{k}}}{\partial \bar{v}_\perp^2} + (\bar{\nu}_\parallel^\mathrm{ab}-\bar{\nu}_\mathrm{D}^\mathrm{ab})\bar{v}_\parallel \bar{v}_\perp \frac{\partial^2 \bar{g}_{\mathrm{a}\bm{k}}}{\partial \bar{v}_\parallel \partial \bar{v}_\perp} \nonumber \\
+  &+ \bar{\nu}_\mathrm{g}^\mathrm{ab} \bar{v}_\parallel \frac{\partial \bar{g}_{\mathrm{a}\bm{k}}}{\partial \bar{v}_\parallel} + \left[ \bar{\nu}_\mathrm{g}^\mathrm{ab} + \frac{\bar{\nu}_\mathrm{D}^\mathrm{ab}}{2} \left( 1 + \frac{\bar{v}_\parallel^2}{\bar{v}_\perp^2} \right) \right] \bar{v}_\perp \frac{\partial \bar{g}_{\mathrm{a}\bm{k}}}{\partial \bar{v}_\perp} \nonumber \\
+  &+\left[ \frac{\bar{\nu}_\mathrm{h}^\mathrm{ab} \bar{v}^2}{4} - \frac{\bar{k}_\perp^2\bar{\rho}_\mathrm{ta}^2}{4} \left\{ \bar{\nu}_\mathrm{D}^\mathrm{ab} (2\bar{v}_\parallel^2 + \bar{v}_\perp^2) + \bar{\nu}_\parallel^\mathrm{ab} \bar{v}_\perp^2 \right\} \right] \bar{g}_{\mathrm{a}\bm{k}}, \\
+  C^\mathrm{D}_\mathrm{ab}(\bar{g}_{\mathrm{a}\bm{k}}) &= \sum_{j=1}^6 \bar{X}_j^\mathrm{ab} \bar{M}_j^\mathrm{ab}, \\ 
+  C^\mathrm{F}_\mathrm{ab}(\bar{g}_{\mathrm{b}\bm{k}}) &= \sum_{j=1}^6 \bar{Y}_j^\mathrm{ab} \bar{M}_j^\mathrm{ba}.\end{align}
+
+Normalized input parameters for GKV are summarized in
+[Appendix X](../appendix/list-of-gkv-namelist.md#sec:list-of-gkv-namelist){ .sec-ref data-target-id="sec:list-of-gkv-namelist" data-prefix="Appendix" }.

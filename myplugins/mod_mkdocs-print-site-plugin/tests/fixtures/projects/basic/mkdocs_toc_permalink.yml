@@ -1,0 +1,14 @@
+site_name: Test
+
+plugins:
+    - print-site:
+        add_to_navigation: true
+
+nav:
+    - Home: index.md
+    - Z: z.md
+    - A: a.md
+
+markdown_extensions:
+    - toc:
+        permalink: True

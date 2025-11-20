@@ -1,0 +1,13 @@
+.md-typeset table {
+  table-layout: fixed;
+  width: 100%;
+}
+.md-typeset table th,
+.md-typeset table td {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.md-typeset table td > code,
+.md-typeset table th > code { white-space: break-spaces; }
+.md-typeset table pre { white-space: pre-wrap; }

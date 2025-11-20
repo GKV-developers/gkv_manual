@@ -1,0 +1,19 @@
+site_name: Test
+
+plugins:
+    - print-site:
+        add_to_navigation: true
+  
+theme:
+    name: material
+    # features:
+        # - tabs
+    
+nav:
+  - Home: index.md
+  - Page Z: z.md
+  - Page A: a.md
+  - Section:
+    - 'Sub1': 'subsection1.md'
+    - 'Sub2': 'subsection2.md'
+  - empty.md

@@ -1,0 +1,12 @@
+site_name: Test
+
+plugins:
+    - print-site:
+        add_to_navigation: true
+
+use_directory_urls: false
+
+nav:
+    - Home: index.md
+    - Z: z.md
+    - A: a.md

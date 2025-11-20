@@ -1,0 +1,74 @@
+/* docs/css/api.css */
+/* --- Autodoc-like cards without <div>, driven by headings & siblings --- */
+
+/* Section heading that starts a card */
+h2.api {
+  position: relative;
+  margin-top: 1.6rem;
+  padding-top: .2rem;
+  font-weight: 800;
+}
+
+/* Card wrapper effect — style the immediate siblings after h2.api */
+h2.api + .api-signature,
+h2.api + .api-signature + table,
+h2.api + .api-signature + table + h3,
+h2.api + .api-signature + table + h3 + ul,
+h2.api + .api-signature + h3,
+h2.api + .api-signature + h3 + ul {
+  border: 1px solid var(--md-typeset-table-color, #dfe2e5);
+  background: var(--md-default-bg-color, #fff);
+  box-shadow: 0 1px 2px rgba(0,0,0,.03);
+  border-radius: 10px; /* card corners remain rounded */
+}
+
+/* Signature block (no <code> inside; square corners & light-blue fill) */
+.api-signature {
+  /* act as the "card header" */
+  padding: .8rem 1rem .6rem 1rem;
+  margin: .6rem 0 0 0;
+  border-bottom: none;
+  background: #e6f4ff;        /* light blue fill */
+  border-radius: 0;            /* square corners as requested */
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 600;
+  line-height: 1.35;
+  word-break: break-all;
+}
+
+/* Key/Value table (Attributes-like) */
+h2.api + .api-signature + table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+h2.api + .api-signature + table th,
+h2.api + .api-signature + table td {
+  border: 1px solid var(--md-typeset-table-color, #dfe2e5);
+  padding: .45rem .6rem;
+  vertical-align: top;
+}
+h2.api + .api-signature + table th {
+  width: 14ch;
+  background: rgba(0,0,0,.02);
+  text-align: left;
+}
+
+/* "Variables" heading & list */
+h2.api + .api-signature + table + h3,
+h2.api + .api-signature + h3 {
+  padding: .6rem 1rem 0 1rem;
+  margin: 0;
+  border-top: 1px solid var(--md-typeset-table-color, #dfe2e5);
+  font-weight: 700;
+}
+h2.api + .api-signature + table + h3 + ul,
+h2.api + .api-signature + h3 + ul {
+  margin: .2rem 0 .8rem 0;
+  padding: 0 1rem .8rem 2rem;
+}
+
+/* Removed .api-badges rules (not used anymore) */

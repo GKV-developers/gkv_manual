@@ -1,0 +1,114 @@
+site_name: Documentation mkdocs-print-site-plugin
+repo_url: https://github.com/timvink/mkdocs-print-site-plugin
+site_url: https://timvink.github.io/mkdocs-print-site-plugin/
+site_description: MkDocs Plugin allowing your site visitors to *File > Print > Save as PDF* the entire site.
+site_author: Tim Vink
+copyright: Copyright &copy; 2024 Maintained by <a href="https://github.com/timvink">Tim Vink</a>.
+
+use_directory_urls: false
+
+plugins:
+    - search
+    - charts
+    - git-revision-date-localized:
+        type: timeago
+        timezone: Europe/Amsterdam
+        locale: en
+        fallback_to_build_date: false
+        enable_creation_date: true
+    - print-site:
+        add_to_navigation: true
+        add_full_urls: false
+        add_table_of_contents: true
+        toc_title: "Table of Contents"
+        toc_depth: 2
+        enumerate_headings: true
+        enumerate_figures: true
+        add_cover_page: true
+        path_to_pdf: "assets/site.pdf"
+
+
+nav:
+    - Home: index.md
+    - Options: options.md
+    - How to guides:
+        - Export to PDF: how-to/export-PDF.md
+        - Export to HTML: how-to/export-HTML.md
+        - Add a print button: how-to/print_button.md
+        - Add a PDF button: how-to/pdf_button.md
+        - Add a cover page: how-to/cover_page.md
+        - Add a banner: how-to/banner.md
+        - Exclude content: how-to/do_not_print.md
+    - Demo Content: demo_content.md
+    - Contributing: contributing.md
+
+theme:
+    name: material
+    custom_dir: docs/overrides
+    icon:
+        admonition:
+            example: fontawesome/solid/flask
+    palette:
+        - media: "(prefers-color-scheme: light)"
+          scheme: default
+          toggle:
+              icon: material/toggle-switch-off-outline
+              name: Switch to dark mode
+          primary: blue
+          accent: blue
+        - media: "(prefers-color-scheme: dark)"
+          scheme: slate
+          toggle:
+              icon: material/toggle-switch
+              name: Switch to light mode
+          primary: blue
+          accent: blue
+
+markdown_extensions:
+    - codehilite:
+        linenums: false
+        guess_lang: false
+    - attr_list
+    - def_list
+    - admonition
+    - footnotes
+    - pymdownx.details
+    - pymdownx.tabbed
+    - pymdownx.superfences:
+        custom_fences:
+          - name: vegalite
+            class: vegalite
+            format: !!python/name:mkdocs_charts_plugin.fences.fence_vegalite
+    - pymdownx.keys
+    - pymdownx.magiclink
+    - pymdownx.snippets
+    - pymdownx.emoji:
+        emoji_index: !!python/name:material.extensions.emoji.twemoji
+        emoji_generator: !!python/name:material.extensions.emoji.to_svg
+    - pymdownx.inlinehilite
+    - pymdownx.highlight:
+        use_pygments: true
+    - pymdownx.critic:
+        mode: view
+    - pymdownx.betterem:
+        smart_enable: all
+    - pymdownx.tasklist:
+        custom_checkbox: true
+    - pymdownx.tasklist:
+        clickable_checkbox: true
+    - pymdownx.arithmatex:
+        generic: true
+    - pymdownx.caret
+    - pymdownx.mark
+    - pymdownx.tilde
+    - pymdownx.smartsymbols
+    - toc:
+        permalink: ↵
+
+extra_javascript:
+    - javascripts/config.js
+    - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+    - https://cdn.jsdelivr.net/npm/vega@5
+    - https://cdn.jsdelivr.net/npm/vega-lite@5
+    - https://cdn.jsdelivr.net/npm/vega-embed@6
+
