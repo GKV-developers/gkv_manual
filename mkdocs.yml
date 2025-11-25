@@ -1,0 +1,61 @@
+site_name: GKV manual
+docs_dir: docs
+use_directory_urls: false
+
+theme:
+  name: material
+
+extra_css:
+  - css/extra.css
+  - css/no-zebra.css
+  - css/code-copy.css
+  - css/code-figure.css
+  - css/print-page.css
+  - css/api.css
+  - css/table-fixed.css
+  - css/title.css
+
+markdown_extensions:
+  - toc
+  - tables
+  - attr_list  
+  - pymdownx.arithmatex:
+      generic: true   # Let Arithmatex wrap math for MathJax/KateX
+
+plugins:
+  - search
+  - enumerate-headings:
+      toc_depth: 2
+      strict: false
+      mod_appendix_next: diagnostics/diagnostics.md
+  - print-site:
+      include_css: false
+      add_table_of_contents: false
+      mod_appendix_next: diagnostics/diagnostics.md
+      
+extra_javascript:
+  - javascripts/mathjax.js         # Your local config (create this file)
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
+  - javascripts/code-copy.js
+  - javascripts/print-page-flag.js
+  - javascripts/section_refs.js
+  - javascripts/bibliography.js
+  - javascripts/figures.js
+
+nav:
+  - Table of Contents: index.md
+  - Formulation: formulation/formulation.md
+  - Normalization: normalization/normalization.md
+  - Discretization: discretization/discretization.md
+  - Simulation: simulation/simulation.md
+  - Diagnostics: diagnostics/diagnostics.md
+  - Appendix:
+      - List of GKV namelist: appendix/list-of-gkv-namelist.md
+      - Use of MHD equilibrium interfaces: appendix/use-of-mhd-equilibrium-interfaces.md
+      - List of GKV output: appendix/list-of-gkv-output.md
+      - Data-reading module diag_rb in the post-processing program diag: appendix/data-reading-module-diag_rb-in-the-post-processing-program-diag.md
+      - Diagnostics modules in the post-processing program diag: appendix/diagnostics-modules-in-the-post-processing-program-diag.md
+      - Adiabatic electron/ion model for nprocs=1: appendix/adiabatic-electron-ion-model-for-nprocs-1.md
+  - Supplemental: supplemental/supplemental.md
+
+copyright: "@ Copyright 2025, Shinya Maeyama"

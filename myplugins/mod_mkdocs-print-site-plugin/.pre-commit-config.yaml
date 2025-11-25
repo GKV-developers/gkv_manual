@@ -1,0 +1,20 @@
+repos:
+  - repo: local
+    hooks:
+    - id: mypy
+      name: mypy
+      entry: mypy
+      language: system
+      types: [python]
+      args: [--ignore-missing-imports, --namespace-packages, --show-error-codes, --pretty]
+
+# D100 requires all Python files (modules) to have a "public" docstring even if all functions within have a docstring.
+# D104 requires __init__ files to have a docstring
+# D212
+# D200 
+# D412 No blank lines allowed between a section header and its content
+# E203
+# W293 blank line contains whitespace
+# W503 line break before binary operator (for compatibility with black)
+# W605 invalid escape sequence '\/'
+# E722 do not use bare 'except'

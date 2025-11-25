@@ -1,0 +1,6 @@
+.wy-table-striped tr:nth-child(2n-1) > th,
+.wy-table-striped tr:nth-child(2n-1) > td,
+.rst-content table.docutils:not(.field-list) tr:nth-child(2n-1) > th,
+.rst-content table.docutils:not(.field-list) tr:nth-child(2n-1) > td {
+  background: transparent !important;
+}

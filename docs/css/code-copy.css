@@ -1,0 +1,60 @@
+/* Positioning wrapper for each code block */
+.codeblock-wrap {
+  position: relative;
+}
+
+/* Keep readthedocs defaults; only add our UI */
+.codeblock-wrap pre {
+  padding-top: 0.9rem;  /* room for badge and button */
+}
+
+/* Language badge at top-right */
+.code-lang-badge {
+  position: absolute;
+  top: 2px;
+  right: 10px;
+  font-size: 12px;
+  line-height: 1;
+  padding: 4px 8px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.65);
+  color: #fff;
+  text-transform: lowercase;
+  user-select: none;
+}
+
+/* Copy button just under the badge (top-right) */
+.code-copy-btn {
+  position: absolute;
+  top: 28px;           /* below the badge */
+  right: 8px;
+  width: 30px;
+  height: 30px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+
+.code-copy-btn:hover {
+  background: #f4f4f4;
+}
+
+.code-copy-btn:active {
+  transform: translateY(1px);
+}
+
+.code-copy-btn.copied {
+  outline: 2px solid #6bc46d; /* subtle success hint */
+}
+
+/* Ensure code text doesn't hide under the button on small screens */
+@media (max-width: 640px) {
+  .codeblock-wrap pre {
+    padding-right: 3.2rem;
+  }
+}

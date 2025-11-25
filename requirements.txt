@@ -1,0 +1,6 @@
+mkdocs>=1.6
+pymdown-extensions
+./myplugins/mod_mkdocs-enumerate-headings-plugin # instead of mkdocs-enumerate-headings-plugin
+mkdocs-material
+
+./myplugins/mod_mkdocs-print-site-plugin # instead of mkdocs-print-site-plugin

@@ -1,0 +1,25 @@
+.wy-nav-content {
+  /* Increase the max width of the white content pane */
+  max-width: 1200px;
+  margin: 0;
+}
+
+/* Center image and caption */
+.figure {
+  text-align: center;
+  margin: 1.2em auto;
+}
+
+/* Ensure images are centered inside figure block */
+.figure img {
+  display: block;
+  margin: 0 auto;
+}
+
+/* Figure caption style */
+.fig-caption {
+  margin-top: 0.4em;
+  font-size: 0.9em;
+  font-style: normal;
+  text-align: center;
+}
