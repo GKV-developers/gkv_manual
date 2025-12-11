@@ -5,7 +5,7 @@
 When finishing a run of GKV, all simulation output will be dumped in the
 output directory `DIR` set in the `run/shoot` script (for example in
 Figure [5.3](../simulation/simulation.md#fig:run-shoot),
-`DIR=/data/lng/maeyama/gkv_training/test01/`), as classified into the
+`DIR=/data/maeyama/gkv_training/test01/`), as classified into the
 following directories,
 
 -   `DIR/`
@@ -30,169 +30,104 @@ List of GKV output is summarized in
 [Appendix X](../appendix/list-of-gkv-namelist.md#sec:list-of-gkv-namelist){ .sec-ref data-target-id="sec:list-of-gkv-namelist" data-prefix="Appendix" }.
 
 Users may diagnose these output data by themselves. The present version
-of GKV provides two post-processing tools, `fig_stdout` and `diag`,
-which are contained in `gkvp_f0.48/extra_tools/`.
+of GKV provides two post-processing tools, `gkvfig` and `diag_python` on [GKV GitHub page](https://github.com/GKV-developers).
 
-## PDF generating script for ASCII output: fig_stdout {#sec:pdf-generating-script-for-ascii-output-fig_stdout}
 
-Noting that `fig_stdout` requires `gnuplot` later than version 5.0.
-Expanding `gkvp_f0.48/extra_tools/fig_stdout.tar.gz` under the output
-directory `DIR`,
+## gkvfig - Generating PDF of GKV standard ASCII output {#sec:pdf-generating-script-for-ascii-output-fig_stdout}
 
--   `DIR/`
+**gkvfig** is a Python package that generates a summary figure PDF of GKV standard ASCII output.
+(Previous `fig_stdout` tool using shell/awk/gnuplot/latex is converted to Python.)
 
-    -   `fig_stdout/`
 
-        -   `make_pdf.csh` (Script for making a PDF sheet)
+### Installation
 
-        -   `src/` (Script for gnuplot)
-
-        -   `pdf/` (Directory to be store the created PDF sheet)
-
-        -   `eps/` (Directory to be store the plotted EPS files)
-
-        -   `data/` (Directory to be store raw data of GKV standard
-            output)
-
-and typing the following commands,
-
-```csh
-cd fig_stdout/
-./make_pdf.csh clean
-./make_pdf.csh
+To install from PyPI:
+```bash
+pip install gkvfig
+```
+Or install the latest development version from GitHub:
+```bash
+pip install git+https://github.com/GKV-developers/gkvfig.git
 ```
 
-users obtain a PDF sheet of the GKV standard output in
-`fig_stdout/pdf/`.
 
-## Post-processing program for BINARY output: diag {#sec:post-processing-program-for-binary-output-diag}
+### Usage
 
-### What is diag?
-
-One difficulty of users may read GKV binary output which are decomposed
-by MPI. Post-processing program `diag` helps to read GKV binary output
-of a desired quantity at a desired time step. Since the read quantity is
-constructed as a global variable, e.g.,
-$\tilde{\phi}_{\bm{k}}(\texttt{-nx:nx,0:global_ny,-global_nz:global_nz-1})$
-(not a local variable decomposed by MPI
-$\tilde{\phi}_{\bm{k}}(\texttt{-nx:nx,0:ny,-nz:nz-1})$), users do not
-need to be conscious of MPI parallelization of GKV. The main program
-`diag_main.f90` calls each diagnostics module `out_*****.f90`, which
-should be encapsulated so as to avoid interference and misuse. Reading
-GKV binary file is done by calling `diag_rb` module in each diagnostics
-module. Although there are some diagnostics modules implemented, users
-can design a new diagnostics module by themselves.
-
-### How to use diag
-
-Expanding `gkvp_f0.48/extra_tools/v29diag.tar.gz`, one finds source
-codes of `diag`.
-
--   `v29diag/`
-
-    -   `Makefile`
-
-    -   `go.diag` (Batch script)
-
-    -   `backup/`
-
-    -   `plotfile/` (Sample file for gnuplot)
-
-    -   `src`
-
-        -   `diag_header.f90` (Module for setting grid resolutions and
-            MPI processes in GKV)
-
-        -   `diag_main.f90` (Main program calling each diagnostics
-            module)
-
-        -   `diag_rb.f90` (Module for reading GKV binary output)
-
-        -   `diag_*****.f90` (Module for other settings)
-
-        -   \...
-
-        -   `out_*****.f90` (Module for each diagnostics)
-
-        -   \...
-
-How to use `diag` is in the following steps:
-
-1\. Setting parameters in `v29diag/src/diag_header.f90`
-
-<figure class="code-figure" markdown>
-  <figcaption>v29diag/src/diag_header.f90</figcaption>
-```fortran
-  ...
-!%%% DIAG parameters %%%
-  integer, parameter :: snum = 1      ! begining of simulation runs
-  integer, parameter :: enum = 1      ! end of simulation runs
-!%%%%%%%%%%%%%%%%        ! Set run numbers covering diagnosed time range.
-
-!%%% GKV parameters %%%
-  integer, parameter :: nxw = 2, nyw = 8
-  integer, parameter :: nx = 0, global_ny = 5 ! 2/3 de-aliasing rule
-  integer, parameter :: global_nz = 64, global_nv = 24, global_nm = 15
-  integer, parameter :: nzb = 3, &  ! the number of ghost grids in z
-                         nvb = 3    ! the number of ghost grids in v and m
-  integer, parameter :: nprocw = 1, nprocz = 4, nprocv = 2, nprocm = 2, nprocs = 2
-!%%%%%%%%%%%%%%%%%%%%%%%%        ! These should be same as gkvp_f0.48_header.f90.
-  ...
+#### **(i) Basic usage: As a command line tool**
+```sh
+python -m gkvfig -d DIR
 ```
-</figure>
+The argument `DIR` is the path of GKV output directory. The namelist file `DIR/gkvp.namelist.001`, log file `DIR/log/gkvp.000000.0.log.001`, and hst directory `DIR/hst/` should exist.
+You get a summary PDF file `CWD/figpdf_yyyymmdd_hhmmss/fig_stdout.pdf`.
 
-2\. Calling diagnostics modules in `v29diag/src/diag_main.f90`
+#### **(ii) As a Python function**
 
-3\. Setting the output directory of GKV, `DIR`, in `go.diag`
+```python
+from gkvfig import gkvfig
 
-4\. Compile & Execution
+gkvfig(gkv_stdout_dir="YOUR GKV OUTPUT DIR")
+```
+You get a summary PDF file `CWD/figpdf_yyyymmdd_hhmmss/fig_stdout.pdf`, always in the current working directory `CWD`.
 
-5\. Output data is dumped in `$DIR/post/`.
 
-### Examples of diag
+### Dependencies
 
-<figure class="code-figure" markdown>
-  <figcaption>Example from v29diag/src/diag_main.f90: outputs 2D electrostatic potential in the x–y plane at a given z, phi_tilde(x, y).</figcaption>
+gkvfig requires the following Python packages:
+- `numpy`, `matplotlib`, `pandas`, `reportlab`, `pypdf`
 
-```fortran
-PROGRAM diag
-  ...
-  use out_mominxy, only : phiinxy    ! Use corresponding diagnostics module
-  implicit none
-  integer :: giz, loop
-  ...
-  giz  = 0       ! Set diagnosed grid in z (-global_nz <= giz <= global_nz-1)
-  loop = 100     ! Set diagnosed time step (time = dtout_ptn * loop)
-  call phiinxy(giz, loop)  ! Output phi_tilde(x,y) at giz=0, loop=100
-  ...
-END PROGRAM diag
+
+## diag_python - Post-processing tool for BINARY output {#sec:post-processing-program-for-binary-output-diag}
+
+**diag_python** is a set of Python scripts, which read Zarr format files of GKV binary output. (Python version of the previous Fortran post-processing tool `diag`.)
+
+
+
+### How to use diag_python
+(i) Copy whole `diag_python/` into the output directory of GKV. For example,  
+
+-  `YOUR_GKV_EXECUTED_DIR/`
+     - `diag_python/`
+     - `cnt/` (Zarr format files \*.zarr will be read by diag_python)
+     - `fxv/` (Zarr format files \*.zarr will be read by diag_python)
+     - `phi/` (Zarr format files \*.zarr will be read by diag_python)
+     - `hst/` (gkvp.mtr.001 will be read by diag_python)
+     - `src/` (gkvp_header.f90 will be read by diag_python)
+     - `log/`
+     - `gkvp_namelist.001` (gkvp_namelist.001 will be read by diag_python)
+
+(ii) Initial settings in `main.py`:  
+
+```python
+import sys
+sys.path.append("./src/")
+from diag_rb import rb_open, rb_get_tri_filelist
+from diag_geom import geom_set
+### Read Zarr store gkvp.phi.*.zarr/ by xarray ###
+xr_phi = rb_open('../phi/gkvp.phi.*.zarr/')
+xr_Al  = rb_open('../phi/gkvp.Al.*.zarr/')
+xr_mom = rb_open('../phi/gkvp.mom.*.zarr/')
+xr_fxv = rb_open('../fxv/gkvp.fxv.*.zarr/')
+xr_cnt = rb_open('../cnt/gkvp.cnt.*.zarr/')
+xr_trn = rb_open('../phi/gkvp.trn.*.zarr/')
+tri_filelist = rb_get_tri_filelist('../phi/gkvp.tri.*.zarr/')
+xr_tri_list=[]
+for file in tri_filelist:
+    xr_tri=rb_open(file + '.*.zarr/')
+    xr_tri_list.append(xr_tri)
+### Set geometric constants ###
+geom_set(headpath='../src/gkvp_header.f90', nmlpath="../gkvp_namelist.001", mtrpath='../hst/gkvp.mtr.001')
 ```
 
-</figure>
-
-
-<figure class="code-figure" markdown>
-  <figcaption>Example from v29diag/src/diag_main.f90: outputs 1D electrostatic potential in the field-aligned z coordinate for a given mode (k_x, k_y), i.e., phi_tilde_k(z).</figcaption>
-
-```fortran
-PROGRAM diag
-  ...
-  use out_mominz, only : phiinz    ! Use corresponding diagnostics module
-  implicit none
-  integer :: mx, gmy, loop
-  ...
-  mx   = 0       ! Set diagnosed radial mode number k_x (-nx <= mx <= nx-1)
-  gmy  = 6       ! Set diagnosed bi-normal mode number k_y (0 <= gmy <= global_ny)
-  loop = 100     ! Set diagnosed time step (time = dtout_ptn * loop)
-  call phiinz(mx, gmy, loop)  ! Output phi_tilde_k(z) at mx=0, gmy=6, loop=100
-  ...
-END PROGRAM diag
+(iii) Call functions, e.g.:
+```python
+from out_mominxy import phiinxy
+# Plot phi[y,x] at t[it], zz[iz]
+it = 3
+iz = 8
+phiinxy(it, iz, xr_phi, flag="display")
 ```
-
-</figure>
+See help(phiinxy) for details.
 
 For more details,
-[Appendix X](../appendix/data-reading-module-diag_rb-in-the-post-processing-program-diag.md#sec:data-reading-module-diag_rb-in-the-post-processing-program-diag){ .sec-ref data-target-id="sec:data-reading-module-diag_rb-in-the-post-processing-program-diag" data-prefix="Appendix" } 
-explains how `diag_rb` module read GKV binary data, and
 [Appendix X](../appendix/diagnostics-modules-in-the-post-processing-program-diag.md#sec:diagnostics-modules-in-the-post-processing-program-diag){ .sec-ref data-target-id="sec:diagnostics-modules-in-the-post-processing-program-diag" data-prefix="Appendix" } 
 shows some examples of diagnostics modules.

@@ -2,7 +2,7 @@
 
 \* Blue-colored sentences are physical assumptions used in GKV
 [Watanabe2006NF](#bib:Watanabe2006NF){.bib-ref data-bib-key="Watanabe2006NF"}. <span style="color: red">This manual is based on the GKV version
-gkvp_f0.48.</span>
+gkvp_f0.65.</span>
 
 ## Governing equations {#sec:governing-equations}
 
@@ -19,18 +19,17 @@ split into equilibrium and perturbed parts $\mathcal{F}=F+\tilde{f}$.
 Additionally, there are some subsidiary assumptions:
 
 -   separation of the equilibrium and perturbed scale lengths
-    $|\nabla F|/F \ll |\nabla \tilde{f}|/f$ \|\| decouples neoclassical
+    $|\nabla F|/F \ll |\nabla \tilde{f}|/f$ decouples neoclassical
     physics from turbulent dynamics and treats flute-type perturbations
 {: style="color: blue"}
 
--   low $\beta$ value \|\| justifies neglect of compressional
+-   low $\beta$ value justifies neglect of compressional
     magnetosonic waves $\tilde{B}_\parallel$ and higher-order correction
     in $\beta$, but retains shear Alfvénic dynamics
     $\tilde{A}_\parallel$
 {: style="color: blue"}
 
--   low equilibrium flows $v_\mathrm{eq.} \ll v_\mathrm{th}$ \|\| the
-    present version of GKV cannot treat equilibrium flows
+-   the present version of GKV treat equilibrium $\bm{E} \times \bm{B}$ flow shear effect.
 {: style="color: blue"}
 
 -   the equilibrium distribution function is to be a local Maxwellian
@@ -44,7 +43,7 @@ Additionally, there are some subsidiary assumptions:
 Then, the $\delta f$ gyrokinetic Vlasov-Poisson-Ampère equations are
 
 \begin{align}
-  &\frac{\partial \tilde{f}_\mathrm{s}}{\partial t} + \left( v_\parallel \frac{\bm{B} + \tilde{\bm{B}}_\perp}{B} + \tilde{\bm{v}}_\mathrm{E} + \bm{v}_\mathrm{sG} + \bm{v}_\mathrm{sC} \right) \cdot \nabla \left( \tilde{f}_\mathrm{s} + \frac{e_\mathrm{s} F_\mathrm{sM}}{T_\mathrm{s}} J_{0\mathrm{s}} \tilde{\phi} \right) \nonumber \\
+  &\frac{\partial \tilde{f}_\mathrm{s}}{\partial t} + \left( \bm{V}_E + v_\parallel \frac{\bm{B} + \tilde{\bm{B}}_\perp}{B} + \tilde{\bm{v}}_\mathrm{E} + \bm{v}_\mathrm{sG} + \bm{v}_\mathrm{sC} \right) \cdot \nabla \left( \tilde{f}_\mathrm{s} + \frac{e_\mathrm{s} F_\mathrm{sM}}{T_\mathrm{s}} J_{0\mathrm{s}} \tilde{\phi} \right) \nonumber \\
   &- \frac{\mu \nabla_\parallel B}{m_\mathrm{s}} \frac{\partial}{\partial v_\parallel} \left( \tilde{f}_\mathrm{s} + \frac{e_\mathrm{s} F_\mathrm{sM}}{T_\mathrm{s}} J_{0\mathrm{s}} \tilde{\phi} \right) \nonumber \\
   &+ \frac{e_\mathrm{s} F_\mathrm{sM}}{T_\mathrm{s}} \left[ v_\parallel \frac{\partial J_{0\mathrm{s}} \tilde{A}_\parallel}{\partial t} - \bm{v}_{\mathrm{s}*} \cdot \nabla J_{0\mathrm{s}} (\tilde{\phi} - v_\parallel \tilde{A}_\parallel) \right] = C_\mathrm{s}, 
   \label{eq:vlasovinreal}\\
@@ -59,12 +58,12 @@ $J_{0\mathrm{s}} = \oint (d\xi/2\pi) e^{\bm{\rho}_\mathrm{s} \cdot \nabla} = \oi
 and
 $\Gamma_{0\mathrm{s}} = \int dv^3 (F_\mathrm{sM}/n_\mathrm{s}) J^2_{0\mathrm{s}}$
 are used with the gyroradius vector
-$\bm{\rho}_\mathrm{s} = \bm{b} \times m_\mathrm{s} \bm{v} / (e_\mathrm{s}B)$.
-The electric and magnetic fields are
+$\bm{\rho}_\mathrm{s} = \bm{b} \times m_\mathrm{s} \bm{v} / (e_\mathrm{s}B)$. $\bm{V}_E = \bm{b} \times \nabla \Phi /B$ denotes the equilibrium $\bm{E} \times \bm{B}$ flow.
+The perturbed electric and magnetic fields are
 $\tilde{\bm{E}} = - \nabla (J_{0\mathrm{s}} \tilde{\phi}) - \bm{b} \partial \tilde{A}_\parallel /\partial t$
 and
 $\tilde{\bm{B}}_\perp = \nabla (J_{0\mathrm{s}} \tilde{A}_\parallel) \times \bm{b}$.
-The $\bm{E} \times \bm{B}$, grad-B, curvature, diamagnetic drift
+The perturbed $\bm{E} \times \bm{B}$, grad-B, curvature, diamagnetic drift
 velocities are respectively given by
 $\tilde{\bm{v}}_\mathrm{E} = \bm{b} \times \nabla (J_{0\mathrm{s}} \tilde{\phi})/B$,
 $\bm{v}_\mathrm{sG} = \bm{b} \times \mu \nabla B/(e_\mathrm{s}B)$,
@@ -86,6 +85,8 @@ rewritten as,
 respectively.
 
 ## Geometry and coordinates {#sec:geometry-and-coordinates}
+
+The following explanation is conventional flux-tube model without equilibrium flow [Beer1995PP](#bib:Beer1995PP){.bib-ref data-bib-key="Beer1995PP"}. For the numerical treatment of equilibrium flow shear effects in the rotating flux-tube model, please refer to [Maeyama2024JCP](#bib:Maeyama2024JCP){.bib-ref data-bib-key="Maeyama2024JCP"}.
 
 When an equilibrium magnetic field is known, one can construct a flux
 coordinate $(\rho_f, \theta_f, \varphi_f)$ such that, 
@@ -181,7 +182,7 @@ $\partial_y=0$, the equilibrium quantities are independent to $x$ and
 $y$, i.e., $F = F(z,v_\parallel,\mu)$, $B = B(z)$, and so on. In a
 non-axisymmetric equilibrium case, one may treat a thin flux-tube domain
 not only in $x$ but also in $y$ direction and evaluate the equilibrium
-quantities at $x=0$ and $y=0$.</span>
+quantities at $x=0$ and $y=0$.</span> 
 
 ## Pseudo-periodic boundary condition along a field line {#sec:pseudo-periodic-boundary-condition-along-a-field-line}
 
@@ -324,6 +325,10 @@ X. Garbet, Y. Idomura, L. Villard, and T.-H. Watanabe, <em>Nucl. Fusion</em> <st
 
 <span class="bibitem" id="bib:Beer1995PP" data-bib-key="Beer1995PP">
 M. A. Beer, S. C. Cowley, and G. W. Hammett, <em>Phys. Plasmas</em> <strong>2</strong>, 2687 (1995).
+</span><br>
+
+<span class="bibitem" id="bib:Maeyama2024JCP" data-bib-key="Maeyama2024JCP">
+S. Maeyama, T.-H. Watanabe, M. Nakata, M. Nunami, Y. Asahi, and A. Ishizawa, <em>J. Comput. Phys.</em> <strong>522</strong>, 113595 (2025).
 </span><br>
 
 <span class="bibitem" id="bib:Sugama2009PP" data-bib-key="Sugama2009PP">

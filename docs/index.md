@@ -23,3 +23,11 @@
 <div style="margin-top: 2rem;"></div>
 - [Full Documentation](print_page.html)
 - [Download PDF](pdf/gkv_manual.pdf)
+
+## Update history
+| Date | Contents |
+| --- | --- |
+| December 11, 2025 | Updated for gkvp_f0.65. | 
+| November 26, 2025 | Translated from LaTeX to MkDocs and Read the Docs.  |  
+| March 15, 2018 | Add an explanation on adiabatic electron/ion model. |  
+| March 8, 2018 | First draft based on gkvp_f0.48. |   

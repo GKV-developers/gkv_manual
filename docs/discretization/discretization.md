@@ -46,6 +46,24 @@ are given in the namelist (`kymin` and `m_j`, respectively), and then,
 $\Delta k_x = |2\pi \hat{s} \Delta k_y / m|$, $L_x = \pi /\Delta k_x$,
 $L_y = \pi / \Delta k_y$.
 
+### Choice of velocity-space coordinate
+
+After gkvp_f0.63, altanate velocity space coordinate, the parallel and perpendicular velocities $(v_\parallel, v_\perp)$ rather than the magnetic coordinate $(v_\parallel, \mu)$. This choice is beneficial when the magnetic field strength significantly varies, like the dipole geometry. Switching the velocity-space coordinates is done in run/gkvp_namelist:
+```
+    vp_coord = 0, # For (vl,mu) coordinates
+```
+or
+```
+    vp_coord = 1, # For (vl,vp) coordinates
+```
+
+In the equation, the parallel advection term is modified:
+
+\begin{align}
+    \frac{\partial}{\partial z}_{(z,v_\parallel,\mu)} &\rightarrow \frac{\partial}{\partial z}_{(z,v_\parallel,v_\perp)} + \frac{v_\perp}{2B}\frac{\partial B}{\partial z}\frac{\partial}{\partial v_\perp}_{(z,v_\parallel,v_\perp)}
+\end{align}
+
+
 ## Temporal discretization {#sec:temporal-discretization}
 
 ### Explicit implementation
@@ -120,7 +138,7 @@ S. Gill, <em>Proc. Cambridge Philosophical Soc.</em> <strong>47</strong>, 96 (19
 </span><br>
 
 <span class="bibitem" id="bib:MaeyamaCPCsubmitted" data-bib-key="MaeyamaCPCsubmitted">
-S. Maeyama, T.-H. Watanabe, Y. Idomura, M. Nakata, and M. Nunami, <em>Comput. Phys. Commun.</em>, submitted.
+S. Maeyama, T.-H. Watanabe, Y. Idomura, M. Nakata, and M. Nunami, <em>Comput. Phys. Commun.</em>, <strong>235</strong>, 9 (2019).
 </span><br>
 
 <span class="bibitem" id="bib:Maeyama2015PC" data-bib-key="Maeyama2015PC">

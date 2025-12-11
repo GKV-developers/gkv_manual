@@ -3,10 +3,10 @@
 ## Structure of GKV {#sec:structure-of-gkv}
 
 <span style="color: red">NOTE: This explanation is based on the GKV version
-gkvp_f0.48.</span>
+gkvp_f0.65.</span>
 When one expands the GKV package, there are
 
--   `gkvp_f0.48/`
+-   `gkvp_f0.65/`
 
     -   `README_for_namelist.txt`
 
@@ -14,32 +14,21 @@ When one expands the GKV package, there are
 
     -   `src/`
 
-        -   `gkvp_f0.48_header.f90` (Module for setting grid resolutions
-            and MPI processes)
+        -   `gkvp_header.f90` (Module for setting grid resolutions and MPI processes)
 
-        -   `gkvp_f0.48_out.f90` (Module for data output)
+        -   `gkvp_out.f90` (Module for data output)
 
         -   \...
 
     -   `lib/`
 
-        -   \... (contains libraries for random number and Bessel
-            functions)
+        -   \... (contains libraries for random number and Bessel functions)
 
     -   `extra_tools/`
 
-        -   `fig_stdout.tar.gz` (creates a PDF file for visualizing
-            standard ASCII output)
-
-        -   `v29diag.tar.gz` (Post processing program for analyzing
-            standard BINARY output)
-
-        -   \...
-
     -   `run/`
 
-        -   `gkvp_f0.48_namelist` (Namelist for setting physical plasma
-            parameters)
+        -   `gkvp_namelist` (Namelist for setting physical plasma parameters)
 
         -   `sub.q` (Batch script, depending on machines)
 
@@ -54,7 +43,7 @@ When one expands the GKV package, there are
 ## Setting parameters {#sec:setting-parameters}
 
 <figure class="code-figure" markdown>
-  <figcaption>src/gkvp_f0.48_header.f90</figcaption>
+  <figcaption>src/gkvp_header.f90</figcaption>
 
 ```fortran
   ...
@@ -68,7 +57,7 @@ When one expands the GKV package, there are
   integer, parameter :: nx = 84, global_ny = 41 ! 2/3 de-aliasing rule
   integer, parameter :: global_nz = 24, global_nv = 48, global_nm = 15
   integer, parameter :: nzb = 3, &  ! the number of ghost grids in z
-                         nvb = 3    ! the number of ghost grids in v and m
+                        nvb = 3    ! the number of ghost grids in v and m
   !--------------------------------------
   ! Data distribution for MPI
   !--------------------------------------
@@ -78,7 +67,7 @@ When one expands the GKV package, there are
 
 </figure>
 
-Grid resolutions and MPI processes are set in src/gkvp_f0.48_header.f90.
+Grid resolutions and MPI processes are set in src/gkvp_header.f90.
 
 -   `nxw` \| Grid number in $x$
 
@@ -114,7 +103,7 @@ $(\mathtt{global\_nm}+1)/\mathtt{nprocm} \geq 4$. `nzb` and `nvb` are
 the number of ghost grid in $z$ and $v_\parallel / \mu$, whose required
 numbers depend on the employed finite difference methods. `nzb`=`nvb`=3
 is enough by default.
-Plasma parameters are set in `run/gkvp_f0.48_namelist`. See
+Plasma parameters are set in `run/gkvp_namelist`. See
 [Appendix X](../appendix/list-of-gkv-namelist.md#sec:list-of-gkv-namelist){ .sec-ref data-target-id="sec:list-of-gkv-namelist" data-prefix="Appendix" } in detail.
 GKV has MHD equilibrium interfaces, IGS for Tokamaks and BZX for
 Stellarators. See
@@ -131,7 +120,7 @@ cd run
 make
 ```
 
-will create the load module `run/gkvp_mpifft.exe`.
+will create the load module `run/gkvp.exe`.
 
 ## Running {#sec:running}
 
@@ -140,28 +129,18 @@ Prepare proper `run/sub.q` and `run/shoot`. Some samples are found in
 
 
 <figure class="code-figure" markdown>
-  <figcaption>run/sub.q for Plasma Simulator at NIFS</figcaption>
+  <figcaption>run/sub.q for Sub-system A of the Plasma Simulator at NIFS/QST</figcaption>
 
-```csh
-#!/bin/csh
-#PJM -L "rscunit=fx"
-#PJM -L "rscgrp=medium"
-#PJM -L "node=32"
-#PJM -L "elapse=24:00:00"
-#PJM -j
-#PJM -s
-#PJM --mpi "proc=64"
-#PJM -g 17000
-setenv PARALLEL 16          # Thread number for automatic parallelization
-setenv OMP_NUM_THREADS 16   # Thread number for Open MP
-set DIR=%%DIR%%
-set LDM=gkvp_mpifft.exe
-set NL=gkvp_f0.48_namelist.%%%
-### Run
-cd ${DIR}
-setenv fu05 ${DIR}/${NL}
-module load fftw-fx/3.3.4
-mpiexec ${DIR}/${LDM}
+```bash
+#!/bin/bash
+#PBS -P YOUR_PROJECT_NAME
+#PBS -q A_S
+#PBS -l walltime=00:15:00
+#PBS -l select=1:ncpus=128:mem=376gb:mpiprocs=16
+
+export OMP_NUM_THREADS=8   # Set number of OpenMP threads per MPI process
+
+...
 ```
 
 </figure>
@@ -180,10 +159,10 @@ is a reasonable choice.
 ```csh
 #!/bin/csh
 #### Environment setting
-set DIR=/data/lng/maeyama/gkv_training/test01
-set LDM=gkvp_mpifft.exe
-set NL=gkvp_f0.48_namelist
-set SC=pjsub
+set DIR=/data/maeyama/gkv_training/test01
+set LDM=gkvp.exe
+set NL=gkvp_namelist
+set SC=qsub
 set JS=sub.q
 ## For VMEC, set VMCDIR including metric_boozer.bin.dat
 set VMCDIR=./input_vmec
@@ -212,6 +191,8 @@ Above three examples assume that the previous job has already finished.
 If a previous (\*.005) job having `JOB_ID = 11223` is still in queue,
 `./shoot 6 7 11223` adds step jobs (\*.006 - \*.007) which sequentially
 follow after the end of previous job (\*.005).
+
+
 Before running expensive nonlinear simulations, it is strongly
 recommended to test computational performance and its scalability: (i)
 Run a short-time run at the target problem size, (ii) Try some
@@ -223,64 +204,97 @@ number of computation nodes. Optimal setting may strongly depend on the
 target problem size.
 
 <figure class="code-figure" markdown>
-  <figcaption>run/gkvp_f0.48_namelist</figcaption>
+  <figcaption>run/gkvp_namelist</figcaption>
 
 ```fortran
-&cmemo memo="GKV-plus f0.48 developed for peta-scale computing", &end
-&calct calc_type="nonlinear",
-       z_bound="outflow",
-       z_filt="off",
-       z_calc="cf4",
-       art_diff=1.d0,
-       num_triad_diag=0, &end
-&triad mxt = 0, myt = 0/
-&equib equib_type = "analytic", &end
-&run_n inum=%%%, 
-       ch_res = .false., &end
-&files f_log="%%DIR%%/log/gkvp_f0.48.",
-       f_hst="%%DIR%%/hst/gkvp_f0.48.",
-       f_phi="%%DIR%%/phi/gkvp_f0.48.",
-       f_fxv="%%DIR%%/fxv/gkvp_f0.48.",
-       f_cnt="%%DIR%%/cnt/gkvp_f0.48.", &end
-&runlm e_limit = 84600.d0, &end
-&times tend = 200.d0,
-       dtout_fxv = 1.d0,
-       dtout_ptn = 0.1d0,
-       dtout_eng = 0.01d0,
-       dtout_dtc = 0.001d0, &end
-&deltt dt_max = 0.001d0,
-       adapt_dt = .true.,
-       courant_num = 0.5d0,
-       time_advnc = "auto_init", &end
-&physp R0_Ln = 2.2d0, 2.2d0,
-       R0_Lt = 6.9d0, 6.9d0,
-       nu = 1.d0, 1.d0,
-       Anum = 5.446d-4, 1.d0,
-       Znum = 1.d0, 1.d0,
-       fcs = 1.d0, 1.d0,
-       sgn = -1.d0, 1.d0,
-       tau = 1.d0, 1.d0,
-       dns1 = 1.d-9, 1.d-9,
-       tau_ad = 1.d0,
-       lambda_i = 4.3d-4,
-       beta = 0.4d-2,
-       ibprime = 0,
-       vmax = 4.d0,
-       nx0 = 10000, &end
-&nperi n_tht = 1,
-       kymin = 0.05d0,
-       m_j   = 4,
-       del_c = 0.d0, &end
-&confp eps_r    = 0.18d0,
-       eps_rnew = 1.d0,
-       q_0      = 1.4d0,
-       s_hat    = 0.78d0,
-...
-&nu_ref Nref = 4.5d19,
-        Lref = 1.7d0,
-        Tref = 2.0d0,
-        col_type = LB,
-        iFLR = 1, icheck = 0, &end
+ &cmemo memo="GKV-plus f0.65 developed for pre-exa-scale computing", &end
+ &calct calc_type="lin_freq",
+        z_bound="outflow",
+        z_filt="off",
+        z_calc="cf4",
+        art_diff=0.1d0,
+        init_random=.true.,
+        num_triad_diag=0,
+        vp_coord=1, &end
+ &triad mxt = 0, myt = 0/
+ &equib equib_type = "analytic", &end
+ &run_n inum=%%%,
+        ch_res = .false., &end
+ &files f_log="%%DIR%%/log/gkvp.",
+        f_hst="%%DIR%%/hst/gkvp.",
+        f_phi="%%DIR%%/phi/gkvp.",
+        f_fxv="%%DIR%%/fxv/gkvp.",
+        f_cnt="%%DIR%%/cnt/gkvp.", &end
+ &runlm e_limit = 60.d0, &end
+ &times tend = 200.d0,
+        dtout_fxv = 10.d0,
+        dtout_ptn = 0.1d0,
+        dtout_eng = 0.1d0,
+        dtout_dtc = 0.1d0, &end
+ &deltt dt_max = 0.01d0,
+        adapt_dt = .true.,
+        courant_num = 0.5d0,
+        time_advnc = "auto_init", &end
+ &physp R0_Ln = 2.22d0,
+        R0_Lt = 6.92d0,
+        nu = 1.d0,
+        Anum = 1.d0,
+        Znum = 1.d0,
+        fcs = 1.d0,
+        sgn = 1.d0,
+        tau = 1.d0,
+        dns1 = 1.d-2,
+        tau_ad = 1.d0,
+        lambda_i = 0.d0,
+        beta = 0.d0,
+        ibprime = 0,
+        vmax = 4.5d0,
+        nx0 = 10000, &end
+ &rotat mach = 0.d0,
+        uprime = 0.d0,
+        gamma_e = 0.d0, &end
+ &nperi n_tht = 3,
+        kymin = 0.05d0,
+        m_j   = 1,
+        del_c = 0.d0, &end
+ &confp eps_r    = 0.18d0,
+        eps_rnew = 1.d0,
+        q_0      = 1.4d0,
+        s_hat    = 0.8d0,
+        lprd     = 0.d0,
+        mprd     = 0.d0,
+        eps_hor  = 0.d0,
+        eps_mor  = 0.d0,
+        eps_por  = 0.d0,
+        rdeps00  = 0.d0,
+        rdeps1_0 = 1.d0,
+        rdeps1_10= 0.d0,
+        rdeps2_10= 0.d0,
+        rdeps3_10= 0.d0,
+        malpha   = 0.d0,    &end
+
+ &ring  ring_a = 0.5d0,
+        kxmin  = 0.05d0, &end
+
+ &vmecp s_input = 0.5d0,
+          nss = 501,
+          ntheta = 384,
+          nzeta  = 0,      &end
+ &bozxf f_bozx="%%DIR%%/vmec/",  &end
+
+ &igsp s_input = 0.5d0,
+          mc_type = 0,
+          q_type = 1,
+          nss = 101,
+          ntheta = 49,      &end
+ &igsf f_igs="%%DIR%%/eqdsk/",  &end
+
+ &nu_ref Nref = 4.5d19,
+         Lref = 1.7d0,
+         Tref = 2.d0,
+         col_type = "LB",
+         iFLR = 1,
+         icheck = 0, &end
 ```
 
 </figure>

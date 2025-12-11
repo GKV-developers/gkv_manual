@@ -3,10 +3,10 @@
 When one runs a single-species simulation with setting `nprocs`=1, GKV
 employs adiabatic model for electrons or ions. In both case,
 electrostatic limit is assumed ($\tilde{A}_\parallel = 0$), and
-`lambda_i` and `beta` in `gkvp_f0.48_namelist` are neglected.
+`lambda_i` and `beta` in `gkvp_namelist` are neglected.
 Setting of kinetic electrons with adiabatic ion model is `nprocs`=1 in
-`src/gkvp_f0.48_header.f90`, and `Anum`=1.d0, `Znum`=1.d0, `fcs`=1.d0,
-`sgn`=-1.d0 in `run/gkvp_f0.48_namelist`. Then the Poisson eq. with
+`src/gkvp_header.f90`, and `Anum`=1.d0, `Znum`=1.d0, `fcs`=1.d0,
+`sgn`=-1.d0 in `run/gkvp_namelist`. Then the Poisson eq. with
 adiabatic ion model is
 
 \begin{align}
@@ -19,10 +19,10 @@ normalized Poisson eq. is
   \left[ \frac{T_\mathrm{e}}{T_\mathrm{i}} + 1 - \bar{\Gamma}_{0\mathrm{e}\bm{k}} \right] \bar{\phi}_{\bm{k}} = - \int d\bar{v}^3 \bar{J}_{0\mathrm{e}\bm{k}} \bar{f}_{\mathrm{e}\bm{k}}.\end{align}
 
 The temperature ratio $T_\mathrm{e}/T_\mathrm{i}$ is given by `tau_ad`
-in `run/gkvp_f0.48_namelist`.
+in `run/gkvp_namelist`.
 Setting of kinetic ions with adiabatic electron model is `nprocs`=1 in
-`src/gkvp_f0.48_header.f90`, and `Anum`=1.d0, `Znum`=1.d0, `fcs`=1.d0,
-`sgn`=1.d0 in `run/gkvp_f0.48_namelist`. Then the Poisson eq. with
+`src/gkvp_header.f90`, and `Anum`=1.d0, `Znum`=1.d0, `fcs`=1.d0,
+`sgn`=1.d0 in `run/gkvp_namelist`. Then the Poisson eq. with
 adiabatic electron model is
 
 \begin{align}
@@ -36,4 +36,4 @@ are normalized ions' value. Then the normalized Poisson eq. is
   \left( 1 - \bar{\Gamma}_{0\mathrm{i}\bm{k}} \right) \bar{\phi}_{\bm{k}} + \frac{T_\mathrm{i}}{T_\mathrm{e}} \left( \bar{\phi}_{\bm{k}} - \langle \bar{\phi}_{\bm{k}} \rangle \delta_{k_y,0} \right) = \int dv^3 \bar{J}_{0\mathrm{i}\bm{k}} \bar{f}_{\mathrm{i}\bm{k}},\end{align}
 
 The temperature ratio $T_\mathrm{i}/T_\mathrm{e}$ is given by `tau_ad`
-in `run/gkvp_f0.48_namelist`.
+in `run/gkvp_namelist`.

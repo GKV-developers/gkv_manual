@@ -1,7 +1,7 @@
 # List of GKV namelist {#sec:list-of-gkv-namelist}
 
 <table>
-  <caption>List of run/gkvp_f0.48_namelist</caption>
+  <caption>List of run/gkvp_namelist</caption>
   <thead>
     <tr>
       <th>Group</th>
@@ -19,7 +19,7 @@
 
     <!-- &calct -->
     <tr>
-      <td rowspan="12" style="vertical-align: top;">&amp;calct</td>
+      <td rowspan="15" style="vertical-align: top;">&amp;calct</td>
       <td rowspan="3" style="vertical-align: top;">calc_type</td>
       <td><div markdown="1">"linear" — for linear runs</div></td>
     </tr>
@@ -63,9 +63,24 @@
     </tr>
 
     <tr>
+      <td>init_random</td>
+      <td><div markdown="1">Switch whether phases of initial Fourier modes are randomized</div></td>
+    </tr>
+
+    <tr>
       <td>num_triad_diag</td>
       <td><div markdown="1">Number of triad transfer diagnostics, consistent with the number of lines "&amp;triad mxt=*, myt=*".</div></td>
     </tr>
+
+    <tr>
+      <td rowspan="2" style="vertical-align: top;">vp_coord</td>
+      <td><div markdown="1">"0" — the magnetic moment mu is the perpendicular velocity-space coordinate</div></td>
+    </tr>
+    <tr>
+      <td><div markdown="1">"1" — the perpendicular velocity vp is the perpendicular velocity-space coordinate</div></td>
+    </tr>
+
+    <tr>
 
     <!-- &triad -->
     <tr>
@@ -76,12 +91,15 @@
 
     <!-- &equib -->
     <tr>
-      <td rowspan="5" style="vertical-align: top;">&amp;equib</td>
-      <td rowspan="5" style="vertical-align: top;">equib_type</td>
+      <td rowspan="8" style="vertical-align: top;">&amp;equib</td>
+      <td rowspan="8" style="vertical-align: top;">equib_type</td>
       <td><div markdown="1">"analytic" — Analytic helical field with the metrics in cylinder</div></td>
     </tr>
     <tr>
       <td><div markdown="1">"s-alpha" — s-alpha model with alpha = 0 (cylindrical metrics)</div></td>
+    </tr>
+    <tr>
+      <td><div markdown="1">"s-alpha-shift" — s-alpha model with Shafranov shift</div></td>
     </tr>
     <tr>
       <td><div markdown="1">"circ-MHD" — Concentric circular field with consistent metrics</div></td>
@@ -91,6 +109,12 @@
     </tr>
     <tr>
       <td><div markdown="1">"eqdsk" — Tokamak field (MEUDAS/TOPICS or G-EQDSK) via IGS code</div></td>
+    </tr>
+    <tr>
+      <td><div markdown="1">"slab" — Shearless slab geometry</div></td>
+    </tr>
+    <tr>
+      <td><div markdown="1">"ring" — Ring dipole geometry</div></td>
     </tr>
 
     <!-- &run_n -->
@@ -258,6 +282,21 @@
       <td><div markdown="1">Radial mode number for initial perturbation. *If nx0 > nx, it is reset to nx.*</div></td>
     </tr>
 
+    <!-- &rotat -->
+    <tr>
+      <td rowspan="3" style="vertical-align: top;">&amp;rotat</td>
+      <td>mach</td>
+      <td><div markdown="1">Not yet implemented</div></td>
+    </tr>
+    <tr>
+      <td>uprime</td>
+      <td><div markdown="1">Not yet implemented</div></td>
+    </tr>
+    <tr>
+      <td>gamma_e</td>
+      <td><div markdown="1">Equilibrium <span class="arithmatex">\( \bm{E} \times \bm{B} \)</span> flow shearing rate <span class="arithmatex">\( \gamma_E \)</span></div></td>
+    </tr>
+
     <!-- &nperi -->
     <tr>
       <td rowspan="4" style="vertical-align: top;">&amp;nperi</td>
@@ -307,23 +346,35 @@
     <tr>
       <td>malpha</td>
     </tr>
+
+     <!-- &ring -->
+    <tr>
+      <td rowspan="2" style="vertical-align: top;">&amp;ring</td>
+      <td>ring_a</td>
+      <td><div markdown="1"> ring_a = a / R0, which specify a flux tube of the ring dipole.   [There is a ring current at R=a. The field line passing through (R,Z)=(R0,0) is picked up as a flux-tube domain.  The reference length is set to be R0 (not the ring current at R=a). The reference magnetic field strength is B0 at (R,Z)=(R0,0).] </div></td>
+    </tr>$
+    <tr>
+      <td>kxmin</td>
+      <td><div markdown="1"> Minimum wavenumber in kx, valid only when equib_type == "ring"</div></td>
+    </tr>
+
      <!-- &vmecp -->
     <tr>
       <td rowspan="4" style="vertical-align: top;">&amp;vmecp</td>
       <td>s_input</td>
-      <td><div markdown="1"> <span style="color: red"> Reference radial flux surface <span class="arithmatex">\( \rho_0 \)</span> in Stellarator (VMEC) equilibrium? </span></div></td>
+      <td><div markdown="1"> Minor radial position of the local flux-tube analysis in Stellarator (VMEC) equilibrium? </div></td>
     </tr>
     <tr>
       <td>nss</td>
-      <td><div markdown="1"> <span style="color: red"> Number of radial grids on METRIC data? </span></div></td>
+      <td><div markdown="1"> Number of radial grids on METRIC data (=nrho in BZX)</div></td>
     </tr>
     <tr>
       <td>ntheta</td>
-      <td><div markdown="1"> <span style="color: red">ntheta = (number of poloidal grids on METRIC) + 1 = 2*global_nz + 1?</span></div></td>
+      <td><div markdown="1"> ntheta = (number of poloidal grids on METRIC = ntht in BZX) = 2*global_nz</div></td>
     </tr>
     <tr>
       <td>nzeta</td>
-      <td><div markdown="1"> <span style="color: red"> Number of toroidal grids on METRIC data? </span></div></td>
+      <td><div markdown="1"> = 0</div></td>
     </tr>
 
     <!-- &bozxf -->
