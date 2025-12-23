@@ -1,0 +1,10 @@
+/* for disable backlink in citations */
+div.citation > span.backrefs {
+    display: none !important;
+}
+div.citation a[role="doc-backlink"] {
+    pointer-events: none;
+    color: inherit;
+    text-decoration: none;
+    cursor: text;
+}

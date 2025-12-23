@@ -1,0 +1,40 @@
+figure.align-center {
+    display: block;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    text-align: center;
+}
+
+img.align-center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.md-typeset div.math,
+div.math {
+    position: relative !important;
+    width: 100% !important;
+    box-sizing: border-box;
+    display: block !important;
+}
+span.eqno {  /* for setting equation number to the right side. */
+    /* float: right !important; */
+    position: absolute ! important;
+    right: 0 !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+
+    margin-right: 0.5em;
+
+    float: none !important;
+}
+mjx-container[display="true"] {
+    display: block !important;
+    width: 100% !important;
+}
+
+.md-nav__link[href$="contents/tutorial/tutorial.html"] {
+  margin-top: 1.5em;
+  display: inline-block;
+}
