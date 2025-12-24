@@ -1,0 +1,12 @@
+.caption-number {
+    font-weight: bold;
+}
+
+.caption-text {
+    font-weight: normal;
+}
+
+.eqno {
+    font-size: 120%;
+    font-weight: normal;
+}

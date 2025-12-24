@@ -1,0 +1,23 @@
+/* for display a., b., c., ... */
+.md-typeset ol.loweralpha,
+ol.loweralpha {
+    list-style-type: lower-alpha !important;
+}
+
+/* for display A., B., C., ... */
+.md-typeset ol.upperalpha,
+ol.upperalpha {
+    list-style-type: upper-alpha !important;
+}
+
+/* for display i., ii., iii., ... */
+.md-typeset ol.lowerroman,
+ol.lowerroman {
+    list-style-type: lower-roman !important;
+}
+
+/* for display I., II., III., ... */
+.md-typeset ol.upperroman,
+ol.upperroman {
+    list-style-type: upper-roman !important;
+}
