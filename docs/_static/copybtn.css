@@ -1,0 +1,6 @@
+button.copybtn {
+    opacity: 1 !important;
+    visibility: visible !important;
+
+    transition: none !important;
+}
